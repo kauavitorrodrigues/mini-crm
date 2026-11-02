@@ -1,176 +1,76 @@
 <div align="center">
 
-![Node](https://img.shields.io/badge/bun-runtime-101418?style=for-the-badge&labelColor=101418&color=FFFFFF)
-![pnpm](https://img.shields.io/badge/pnpm-workspace-101418?style=for-the-badge&labelColor=101418&color=FFFFFF)
-![TypeScript](https://img.shields.io/badge/typescript-6.x-101418?style=for-the-badge&labelColor=101418&color=FFFFFF)
-
-mini-crm — a Turborepo monorepo.
+mini-crm — a small CRM (contacts, deals, sales funnel). pnpm + Turborepo monorepo.
 
 [Architecture](#architecture) • [Getting Started](#getting-started) • [Scripts](#scripts) • [Deployment](#deployment)
 
 </div>
 
+**Local-only rule:** academic project that runs 100% locally, with no third-party services (no analytics, e-mail, external storage, CDNs or remote fonts; fonts are bundled via npm) and no file uploads.
+The only infrastructure is the local PostgreSQL from `compose.yml`.
+
 ## Architecture
 
-`mini-crm` is a `pnpm` + Turborepo monorepo split into three deployable apps (`web`, `api`, `worker`) and a set of shared packages they consume:
+Two apps and a set of shared packages (`web → api → core → database`):
 
-- `web` is the React SPA. It talks to `api` over HTTP and never talks to the database or Redis directly.
-- `api` is the NestJS HTTP layer. It delegates business logic to `packages/core`, checks permissions via `packages/auth`, and reads/writes through `packages/database` (Drizzle).
-- `worker` runs the async side: BullMQ job processors defined in `packages/jobs`. It shares `packages/database` and `packages/infra` with `api`, so nothing is duplicated between the two runtimes.
-- Everything cross-cutting (domain types, shared errors, route path constants, permission rules) lives in its own package under `packages/`, so `web`, `api`, and `worker` share a single source of truth instead of drifting.
+- `apps/web`: React SPA (Vite, TanStack Router/Query, shadcn/ui).
+- `apps/api`: NestJS HTTP API. Session is a JWT in an httpOnly cookie; every route needs a session except `POST /auth/signin` and `GET /health/ping`.
+- `packages/core`: domain logic (repository + service per feature).
+- `packages/database`: Drizzle schema, migrations and seed (PostgreSQL).
+- `packages/contracts`: shared types and errors. `packages/routes`: API path constants. `packages/config/*`: tooling presets.
 
-```text
-.
-├── apps/
-│   ├── web/                 # Frontend (Vite + React + shadcn/ui)
-│   ├── api/                 # HTTP backend (NestJS)
-│   └── worker/               # Async processing (BullMQ)
-├── packages/
-│   ├── auth/                 # Roles/resources permission matrix
-│   ├── contracts/             # Shared types and errors across apps
-│   ├── core/                   # Domain logic
-│   ├── database/                # Drizzle schema and client (PostgreSQL)
-│   ├── infra/                    # Technical integrations (Redis)
-│   ├── jobs/                      # Shared queues and job definitions
-│   ├── routes/                     # Shared API route path constants
-│   └── config/
-│       ├── tsconfig/                # TS presets (app/package/web)
-│       ├── eslint/                   # Shared ESLint presets
-│       ├── prettier/                  # Shared Prettier preset
-│       └── vitest/                     # Vitest presets (node/web)
-├── compose.yml                # Local infra (Postgres, Redis)
-├── ecosystem.config.js         # PM2 process definitions (api, worker)
-├── package.json                 # Root scripts and devDependencies
-├── pnpm-workspace.yaml            # Workspace glob declarations
-├── turbo.json                      # Turborepo pipeline config
-├── prettier.config.cjs              # Root Prettier config
-├── .editorconfig                     # Editor baseline (indent, charset, EOL)
-├── .prettierignore
-├── .gitignore
-└── .env
-```
+More detail in [`docs/architecture`](docs/architecture/README.md); API in [`docs/API-CONTRACT.md`](docs/API-CONTRACT.md).
 
-### Stack
-
-| Layer | Technologies |
-| --- | --- |
-| Workspace | pnpm, Turborepo |
-| Frontend | React 19, Vite, TailwindCSS, TanStack Router, TanStack Query, shadcn/ui |
-| Backend | NestJS, TypeScript |
-| Database | PostgreSQL, Drizzle ORM |
-| Queue | Redis, BullMQ |
-| Quality | ESLint, Prettier, Vitest, TypeScript |
+| Layer     | Technologies                                                            |
+| --------- | ----------------------------------------------------------------------- |
+| Workspace | pnpm, Turborepo                                                         |
+| Frontend  | React 19, Vite, TailwindCSS, TanStack Router, TanStack Query, shadcn/ui |
+| Backend   | NestJS, TypeScript                                                      |
+| Database  | PostgreSQL, Drizzle ORM                                                 |
+| Quality   | ESLint, Prettier, Vitest, GitHub Actions                                |
 
 ## Getting Started
 
-### Prerequisites
-
-| Requirement | Version |
-| --- | --- |
-| pnpm | 10+ |
-| Docker | latest |
-| Docker Compose | latest |
-
-### 1. Install dependencies
+Requirements: pnpm 12+, Docker with Compose.
 
 ```bash
 pnpm install
-```
-
-### 2. Configure environment variables
-
-Copy `.env.example` to `.env` at the repo root and fill in the values:
-
-```bash
-cp .env.example .env
-```
-
-### 3. Start local infrastructure
-
-```bash
-docker compose up -d
-```
-
-Services:
-- PostgreSQL at `127.0.0.1:5485`
-- Redis at `127.0.0.1:6358`
-
-### 4. Prepare database
-
-```bash
-pnpm --filter @mini-crm/database db:generate initial
+cp .env.example .env            # then set JWT_SECRET (openssl rand -base64 48) and SEED_USER_*
+docker compose up -d            # PostgreSQL on 127.0.0.1:5485
 pnpm --filter @mini-crm/database db:migrate
 pnpm --filter @mini-crm/database db:seed
-```
-
-`apps/api`'s test suite (`pnpm test`) also needs this step done first — its e2e
-tests sign in as the seeded demo user against a live database, they don't
-mock it.
-
-### 5. Start development
-
-```bash
 pnpm dev
 ```
 
 - Web: http://localhost:5173
-- API: http://localhost:4353
-- API docs (Swagger): http://localhost:4353/api-docs
+- API: http://localhost:4353 (Swagger at `/api-docs`, health at `/health/ping`)
 
-## Authentication
-
-Email/password sign-in, backed by a JWT stored in an httpOnly cookie.
-
-| Role | Email | Password |
-| --- | --- | --- |
-| ADMIN | admin@mini-crm.com | demo1234 |
-| USER | user@mini-crm.com | demo1234 |
+Sign in with `SEED_USER_EMAIL` / `SEED_USER_PASSWORD` from your `.env`. There is no public signup or password recovery. The seed is idempotent and creates the user and the four funnel stages (Novo lead, Em negociação, Proposta enviada, Fechamento).
 
 ## Scripts
-
-### Root scripts
 
 ```bash
 pnpm dev              # Run all apps in watch mode
 pnpm build            # Build all packages and apps
-pnpm lint             # Lint all code
+pnpm lint             # Lint
 pnpm check-types      # TypeScript type checking
-pnpm test             # Run all tests
-pnpm format           # Format all code
-pnpm format:check     # Check formatting
-pnpm run deploy       # Pull, install, migrate, build, and reload via PM2
+pnpm test             # Tests (need the database migrated and seeded)
+pnpm format:check     # Check formatting (pnpm format to fix)
+pnpm run deploy       # Pull, install, migrate, build, reload via PM2
 ```
-
-### Database scripts
 
 ```bash
-pnpm --filter @mini-crm/database db:generate <migration-name>   # Generate a migration
-pnpm --filter @mini-crm/database db:migrate     # Apply migrations (dev)
-pnpm --filter @mini-crm/database db:deploy       # Apply migrations (production)
-pnpm --filter @mini-crm/database db:studio        # Open Drizzle Studio
-pnpm --filter @mini-crm/database db:seed          # Seed demo users
+pnpm --filter @mini-crm/database db:generate <name>   # Generate a migration
+pnpm --filter @mini-crm/database db:migrate           # Apply migrations (dev)
+pnpm --filter @mini-crm/database db:deploy            # Apply migrations (production)
+pnpm --filter @mini-crm/database db:seed              # Seed user and stages
+pnpm --filter @mini-crm/database db:studio            # Drizzle Studio
 ```
 
-### Full local validation
+## CI
 
-```bash
-pnpm run lint
-pnpm run check-types
-pnpm run test
-pnpm run format:check
-pnpm install --frozen-lockfile
-```
+`.github/workflows/ci.yml` runs on push and pull requests: `pnpm install --frozen-lockfile`, `check-types`, `lint`, `format:check`, migrate + seed against a Postgres service, `test`, `build`.
 
 ## Deployment
 
-The current deployment flow is orchestrated by the root `deploy` script:
-
-1. `git pull`
-2. `pnpm install`
-3. `packages/database: db:deploy`
-4. `pnpm build`
-5. PM2 `startOrReload` (`api`, `worker`)
-
-```bash
-pnpm run deploy
-```
+`pnpm run deploy` does: `git pull`, `pnpm install`, `db:deploy`, `pnpm build`, PM2 `startOrReload` of the API (`ecosystem.config.js`). The web build (`apps/web/dist`) is static and must be served separately (any static host or reverse proxy), with `VITE_BASE_API_URL` pointing to the API at build time.

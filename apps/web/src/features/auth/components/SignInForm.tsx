@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
-import {
-    SignInSchema,
-    type SignInSchemaType,
-} from "@mini-crm/contracts";
+import { SignInSchema, type SignInSchemaType } from "@mini-crm/contracts";
 import { TextFormField } from "@/components/fields/TextFormField";
 import { Button } from "@/components/ui/button";
 import { queryClient } from "@/lib/tanstack/queryClient";
