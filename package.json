@@ -9,6 +9,10 @@
         "test": "turbo run test",
         "format": "prettier . --write",
         "format:check": "prettier . --check",
+        "local": "node scripts/local.mjs",
+        "local:setup": "node scripts/local.mjs --no-start",
+        "local:stop": "node scripts/local.mjs stop",
+        "local:reset": "node scripts/local.mjs reset",
         "deploy": "git pull && pnpm install && pnpm --filter @mini-crm/database run db:deploy && pnpm build && pm2 startOrReload ecosystem.config.js"
     },
     "devDependencies": {
