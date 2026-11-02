@@ -1,11 +1,11 @@
 # Frontend: Vite + React
 
-`apps/web` is a Vite + React SPA, routed with TanStack Router and using TanStack Query for all server state. There is no global client-side store for server data — if it came from the API, it lives in the query cache, not in component state.
+O `apps/web` é uma SPA em Vite + React, com rotas do TanStack Router e todo o estado de servidor no TanStack Query. Não há store global no cliente para dados do servidor: se veio da API, vive no cache de queries, não no estado de componentes.
 
 ```mermaid
 graph TD
-    routes["src/routes/<br/>TanStack Router file routes"] --> features["src/features/<feature>/<br/>hooks, mutations, queries, components"]
-    features --> api["src/lib/api/client.ts<br/>typed API wrapper"]
+    routes["src/routes/<br/>rotas por arquivo (TanStack Router)"] --> features["src/features/&lt;feature&gt;/<br/>queries, mutations, components"]
+    features --> api["src/lib/api/client.ts<br/>wrapper tipado da API"]
     features --> tanstack["src/lib/tanstack/queryClient.ts"]
     routes --> providers["src/components/providers/<br/>AppProviders, ThemeProvider"]
     features --> ui["src/components/ui/ (shadcn) + fields/ (RHF)"]
@@ -13,24 +13,43 @@ graph TD
 
 ## `src/routes/`
 
-One file per route, file-based routing via TanStack Router (`src/routeTree.gen.ts` is generated — don't hand-edit it). `__root.tsx` is the layout shell; `_app.tsx`/`_app.index.tsx` are the authenticated app shell and its index page.
+Um arquivo por rota, com roteamento baseado em arquivos do TanStack Router (`src/routeTree.gen.ts` é gerado: não edite à mão). `__root.tsx` é o layout raiz e `login.tsx` é a tela pública. As demais rotas ficam sob `_app.tsx`, a casca autenticada:
+
+| Arquivo                | Rota         | Conteúdo                   |
+| ---------------------- | ------------ | -------------------------- |
+| `_app.index.tsx`       | `/`          | Quadro Kanban              |
+| `_app.deals.index.tsx` | `/deals`     | Lista de negócios          |
+| `_app.deals.$id.tsx`   | `/deals/:id` | Detalhe do negócio e notas |
+| `_app.contacts.tsx`    | `/contacts`  | Contatos                   |
+| `_app.dashboard.tsx`   | `/dashboard` | Painel de resumo           |
 
 ## `src/features/<feature>/`
 
-Everything about one feature, colocated: `hooks/`, `queries/`, `mutations/` (TanStack Query), `contexts/` (e.g. `AuthContext`), `components/`, and feature-local `consts/` (e.g. query keys). Cross-feature shared UI goes in `src/components/` instead, not in a feature folder.
+Tudo sobre uma feature, no mesmo lugar: `queries/` e `mutations/` (TanStack Query), `components/`, `consts/` (por exemplo as chaves de query), `types.ts` e, quando necessário, `hooks/`, `contexts/` (como o `AuthContext`) e `utils/`. A UI compartilhada entre features fica em `src/components/`, não em uma pasta de feature.
+
+Features atuais: `auth`, `contacts`, `deals`, `kanban`, `dashboard` e `onboarding` (o checklist "Primeiros passos").
 
 ## `src/lib/api/client.ts`
 
-The single typed wrapper around calls to `apps/api`. It imports error types like `ApiError` from `packages/contracts` — it must never re-export them; callers import contract types directly from `packages/contracts`, not through this file.
+O único wrapper tipado das chamadas ao `apps/api`, com `get`, `post`, `patch` e `delete`. Uma resposta 401 em qualquer rota, exceto login e validação, limpa o cache e leva ao login. Ele importa tipos de erro como `ApiError` do `packages/contracts` e nunca deve reexportá-los: quem chama importa os tipos de contrato direto do `packages/contracts`, não por este arquivo.
 
 ## `src/lib/tanstack/queryClient.ts`
 
-The shared `QueryClient` instance and its defaults. All server data flows through it — don't reach for `useState`/`useEffect` to cache something a query already owns.
+A instância compartilhada do `QueryClient` e seus padrões. Todo dado de servidor passa por ela: não use `useState` ou `useEffect` para guardar em cache algo que uma query já controla.
+
+## `src/lib/`
+
+Utilitários puros: `format.ts` (moeda em BRL e porcentagem) e `errors.ts`.
 
 ## `src/components/`
 
-`ui/` is the shadcn/ui primitive set (treat as vendored — extend by composition, not by editing). `fields/` (`GenericFormField`, `TextFormField`) are the required building blocks for form fields: every form field is React Hook Form + a Zod resolver through one of these, never a raw `useState`-driven input. `providers/` wires `AppProviders`/`ThemeProvider` around the app root.
+- `ui/`: primitivos do shadcn/ui. Trate como código de terceiros e estenda por composição, não editando.
+- `fields/`: `GenericFormField`, `TextFormField`, `SelectFormField`, `TextareaFormField` e `CurrencyInput`. São os blocos obrigatórios dos campos de formulário: todo campo é React Hook Form com resolver do Zod por um destes componentes, nunca um input controlado por `useState`.
+- `common/`: `ConfirmDialog`, `QueryState` (estados de carregando, erro e vazio) e `ProgressBar`.
+- `layout/`: `AppShell`, com a navegação lateral e a saída da sessão.
+- `brand/`: o `Logo` em SVG.
+- `providers/`: `AppProviders` e `ThemeProvider` ao redor da raiz do app.
 
 ## `src/types/`
 
-Frontend-specific type glue (e.g. `api.ts`). Domain types still come from `packages/contracts`.
+Cola de tipos específica do frontend (por exemplo `api.ts`). Os tipos de domínio ainda vêm do `packages/contracts`.

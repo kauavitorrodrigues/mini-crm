@@ -40,13 +40,13 @@ Há um único papel de acesso (**Usuário**), uma única empresa e um único fun
 
 ### Contexto acadêmico
 
-Entrega da disciplina _Processo de Produção, Métricas e Qualidade de Software_ (UNILESTE, Coronel Fabriciano, 2026): backlog Scrum, 4 sprints semanais, histórias no template padrão e matriz Complexidade x Incerteza. O produto foi construído do zero; o escopo está resumido em [`docs/SCRUM.md`](docs/SCRUM.md).
+Entrega da disciplina _Processo de Produção, Métricas e Qualidade de Software_ (UNILESTE, Coronel Fabriciano, 2026): backlog Scrum, 4 sprints semanais, histórias no template padrão e matriz Complexidade x Incerteza. O produto foi construído do zero; o escopo está resumido em [`docs/scrum.md`](docs/scrum.md).
 
 ### Escopo do MVP
 
 10 histórias (16 pontos): autenticação, fundação e CI, contatos, busca, funil fixo, negócios, Kanban com arrastar e soltar, ganho/perdido, notas e painel de resumo (detalhadas na [seção 3](#3-funcionalidades)).
 
-**Fora do escopo (não implementado de propósito):** várias empresas, papéis e permissões, cadastro público, recuperação de senha, gestão de usuários pela interface; pipelines e estágios configuráveis, tags; atividades, tarefas, lembretes, automações, anexos; organizações, avatar, importação e exportação de contatos; agenda, notificações, e-mails; webhooks, chaves de API, UTM, agentes de IA; log de auditoria; tempo real, filas e processamento em segundo plano; internacionalização. Lista completa em [`docs/SCRUM.md`](docs/SCRUM.md#fora-do-escopo-do-mvp).
+**Fora do escopo (não implementado de propósito):** várias empresas, papéis e permissões, cadastro público, recuperação de senha, gestão de usuários pela interface; pipelines e estágios configuráveis, tags; atividades, tarefas, lembretes, automações, anexos; organizações, avatar, importação e exportação de contatos; agenda, notificações, e-mails; webhooks, chaves de API, UTM, agentes de IA; log de auditoria; tempo real, filas e processamento em segundo plano; internacionalização. Lista completa em [`docs/scrum.md`](docs/scrum.md#fora-do-escopo-do-mvp).
 
 ### Regra de execução local
 
@@ -117,7 +117,7 @@ Script `scripts/local.mjs` (Node puro, sem dependências), idempotente, com logs
 | Quer recomeçar do zero                                              | `pnpm local:reset` e depois `pnpm local` (para refazer também o `.env`, apague-o antes).                                                                                                            |
 | Login falha com o botão de demonstração                             | Os valores `VITE_DEMO_*` precisam ser iguais a `SEED_USER_*` **e** o seed ter rodado com eles; o seed não altera um usuário já existente.                                                           |
 
-Sem o script, os mesmos passos estão em [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md#rodar-manualmente-sem-pnpm-local).
+Sem o script, os mesmos passos estão em [`docs/desenvolvimento.md`](docs/desenvolvimento.md#rodar-manualmente-sem-pnpm-local).
 
 ## 3. Funcionalidades
 
@@ -126,7 +126,7 @@ Fluxo sugerido para avaliar: entrar com o botão de demonstração, olhar o **Qu
 | História | Módulo e tela              | Como usar                                                                                                                         | Regras principais                                                                                                                                                                                    |
 | -------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | US-01    | **Login** (`/login`)       | E-mail e senha; "Sair" encerra a sessão. Telas protegidas redirecionam ao login.                                                  | E-mail normalizado (minúsculo, sem espaços); senha com hash bcrypt; mensagem de erro genérica; cookie httpOnly; tudo exige sessão exceto login e saúde                                               |
-| US-02    | **Fundação**               | Projeto, CI, `/health/ping`, validação de variáveis na inicialização, README.                                                     | API recusa iniciar com variável obrigatória ausente; `/health/ping` responde 503 se o banco cair                                                                                                     |
+| US-02    | **Fundação**               | Projeto, CI, `/health/ping`, validação de variáveis na inicialização, leia-me.                                                    | API recusa iniciar com variável obrigatória ausente; `/health/ping` responde 503 se o banco cair                                                                                                     |
 | US-03    | **Contatos** (`/contacts`) | Lista, criar, editar e excluir (com confirmação).                                                                                 | Nome obrigatório (até 100); e-mail (válido) e telefone opcionais; empresa livre; excluir contato com negócios retorna **409**                                                                        |
 | US-04    | **Busca de contatos**      | Campo de busca na lista, filtra enquanto digita.                                                                                  | Por nome ou e-mail, sem diferenciar maiúsculas, por trecho (`ILIKE`); campo vazio mostra tudo; debounce de 300 ms; estado "nenhum resultado"                                                         |
 | US-05    | **Funil fixo**             | Estágios "Novo lead", "Em negociação", "Proposta enviada", "Fechamento" já existem.                                               | Fixos e somente leitura (`GET /stages`); seed idempotente                                                                                                                                            |
@@ -136,7 +136,7 @@ Fluxo sugerido para avaliar: entrar com o botão de demonstração, olhar o **Qu
 | US-09    | **Notas** (`/deals/:id`)   | Detalhe do negócio com linha do tempo (mais recente primeiro), adicionar e excluir nota (com confirmação).                        | Texto 1 a 2000; guarda autor e data; só o autor exclui (403 para outro); sem edição                                                                                                                  |
 | US-10    | **Painel** (`/dashboard`)  | Cartões do mês atual em reais.                                                                                                    | Abertos (qtd e valor), ganhos do mês (qtd e valor), perdidos do mês, taxa de conversão = ganhos / (ganhos + perdidos), 0 sem encerramentos                                                           |
 
-Extras de interface: tema claro ou escuro conforme o sistema operacional, estados vazios com próxima ação e uma checklist "Primeiros passos" na tela inicial (complemento de usabilidade, derivada dos dados já carregados; ver nota em [`docs/SCRUM.md`](docs/SCRUM.md#fora-do-escopo-do-mvp)).
+Extras de interface: tema claro ou escuro conforme o sistema operacional, estados vazios com próxima ação e uma checklist "Primeiros passos" na tela inicial (complemento de usabilidade, derivada dos dados já carregados; ver nota em [`docs/scrum.md`](docs/scrum.md#fora-do-escopo-do-mvp)).
 
 ## 4. Arquitetura
 
@@ -164,7 +164,7 @@ A interface fala somente com a API; a API autentica, valida e delega; apenas `co
 | `packages/routes`    | Constantes dos paths da API compartilhadas entre quem define e quem chama                        |
 | `packages/config/*`  | Presets de tsconfig, ESLint, Prettier e Vitest                                                   |
 
-Detalhes por parte em [`docs/architecture`](docs/architecture/README.md).
+Detalhes por parte em [`docs/arquitetura`](docs/arquitetura/leia-me.md).
 
 ### Stack e motivos
 
@@ -183,7 +183,7 @@ Detalhes por parte em [`docs/architecture`](docs/architecture/README.md).
 | Qualidade     | Vitest, supertest, ESLint, Prettier, GitHub Actions | Testes e2e da API contra banco real, análise estática e formatação (como no escopo)                              |
 | Execução      | Docker Compose (só o PostgreSQL)                    | O avaliador não precisa instalar nem configurar banco                                                            |
 
-O escopo admite alternativas justificadas ("qualquer alternativa deve ser justificada"); a decisão de manter NestJS e Drizzle está em [`docs/PLANO-EXECUCAO.md`](docs/PLANO-EXECUCAO.md#1-decisões-de-stack-scaffold-vence-a-sugestão-do-docx).
+O escopo admite alternativas justificadas ("qualquer alternativa deve ser justificada"); a decisão de manter NestJS e Drizzle está em [`docs/plano-execucao.md`](docs/plano-execucao.md#1-decisões-de-stack-scaffold-vence-a-sugestão-do-docx).
 
 ### Estrutura do repositório
 
@@ -208,7 +208,7 @@ O escopo admite alternativas justificadas ("qualquer alternativa deve ser justif
 │   ├── database/                 # schema Drizzle, migrations/, seed.ts, seed-demo.ts
 │   ├── routes/                   # constantes de paths (ApiRoutes)
 │   └── config/                   # eslint, prettier, tsconfig, vitest
-├── docs/                         # API-CONTRACT, SCRUM, DEVELOPMENT, PLANO-EXECUCAO, architecture/
+├── docs/                         # contrato-api, scrum, desenvolvimento, plano-execucao, arquitetura/
 ├── scripts/local.mjs             # setup de 1 comando (pnpm local)
 ├── compose.yml                   # PostgreSQL 18 (127.0.0.1:5485)
 ├── ecosystem.config.js           # PM2 (somente a API)
@@ -270,7 +270,7 @@ Excluir um contato com negócios é bloqueado pelo banco (`RESTRICT`) e a API de
 
 ### API
 
-Resposta de sucesso: `{ "data": ... }` (204 sem corpo). Erros: `{ message, code }`. Tudo exige sessão, exceto `POST /auth/signin` e `GET /health/ping`. Contrato completo em [`docs/API-CONTRACT.md`](docs/API-CONTRACT.md); documentação interativa em `/api-docs` (rotas conferidas com os controllers).
+Resposta de sucesso: `{ "data": ... }` (204 sem corpo). Erros: `{ message, code }`. Tudo exige sessão, exceto `POST /auth/signin` e `GET /health/ping`. Contrato completo em [`docs/contrato-api.md`](docs/contrato-api.md); documentação interativa em `/api-docs` (rotas conferidas com os controllers).
 
 | Método | Rota                      | Descrição                                    | Erros    |
 | ------ | ------------------------- | -------------------------------------------- | -------- |
@@ -325,13 +325,13 @@ pnpm format:check
 pnpm build
 ```
 
-- **47 testes** em 10 arquivos: 38 e2e da API (auth, contatos, negócios e transições, notas, estágios, painel, saúde), 1 de idempotência do seed e 8 de funções puras do front (Kanban e formatação). Cobertura detalhada em [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md#testes).
+- **47 testes** em 10 arquivos: 38 e2e da API (auth, contatos, negócios e transições, notas, estágios, painel, saúde), 1 de idempotência do seed e 8 de funções puras do front (Kanban e formatação). Cobertura detalhada em [`docs/desenvolvimento.md`](docs/desenvolvimento.md#testes).
 - Os testes da API usam o banco do `.env`; cada suíte remove o que cria, então os dados de demonstração permanecem.
 - **CI:** `.github/workflows/ci.yml` roda install, tipos, lint, formatação, migração e seed, testes e build. Ver a limitação sobre sua execução abaixo.
 
 ### Scrum
 
-Resumo dos artefatos (detalhes em [`docs/SCRUM.md`](docs/SCRUM.md)):
+Resumo dos artefatos (detalhes em [`docs/scrum.md`](docs/scrum.md)):
 
 | Sprint | Período       | Histórias           | Pts |
 | ------ | ------------- | ------------------- | --- |
@@ -340,7 +340,7 @@ Resumo dos artefatos (detalhes em [`docs/SCRUM.md`](docs/SCRUM.md)):
 | 3      | 09/11 a 13/11 | US-07, US-08        | 4   |
 | 4      | 16/11 a 20/11 | US-09, US-10        | 3   |
 
-Esforço pela matriz Complexidade x Incerteza (Fibonacci): 1 ponto para US-03, 04, 05, 08, 09; 2 pontos para US-01, 02, 06, 10; 3 pontos para US-07 (única com incerteza Média). Total: 16 pontos. A [DoR e a DoD globais](docs/SCRUM.md#definition-of-ready-e-definition-of-done) e o backlog completo estão em `docs/SCRUM.md`. O plano técnico por sprint e seu status estão em [`docs/PLANO-EXECUCAO.md`](docs/PLANO-EXECUCAO.md).
+Esforço pela matriz Complexidade x Incerteza (Fibonacci): 1 ponto para US-03, 04, 05, 08, 09; 2 pontos para US-01, 02, 06, 10; 3 pontos para US-07 (única com incerteza Média). Total: 16 pontos. A [DoR e a DoD globais](docs/scrum.md#definition-of-ready-e-definition-of-done) e o backlog completo estão em `docs/scrum.md`. O plano técnico por sprint e seu status estão em [`docs/plano-execucao.md`](docs/plano-execucao.md).
 
 ## 6. Referência: scripts, variáveis e publicação
 
@@ -393,7 +393,7 @@ O `.env` está no `.gitignore`. O Turborepo trata o `.env` como dependência glo
 
 ### Publicação (PM2)
 
-`pnpm run deploy` executa `git pull && pnpm install && db:deploy && pnpm build && pm2 startOrReload ecosystem.config.js`. O `ecosystem.config.js` define um único processo, `mini-crm:api` (`pnpm start` em `apps/api`); o worker foi removido na limpeza de escopo. Foi verificado que o build gera a API e que `pnpm start` a coloca no ar respondendo `/health/ping`; **a execução do PM2 em si não foi testada** (não instalado no ambiente de desenvolvimento) e o `git pull` exige um remoto configurado. O front (`apps/web/dist`) é estático e deve ser servido à parte, com `VITE_BASE_API_URL` definido no build. Detalhes em [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md#publicação-deploy).
+`pnpm run deploy` executa `git pull && pnpm install && db:deploy && pnpm build && pm2 startOrReload ecosystem.config.js`. O `ecosystem.config.js` define um único processo, `mini-crm:api` (`pnpm start` em `apps/api`); o worker foi removido na limpeza de escopo. Foi verificado que o build gera a API e que `pnpm start` a coloca no ar respondendo `/health/ping`; **a execução do PM2 em si não foi testada** (não instalado no ambiente de desenvolvimento) e o `git pull` exige um remoto configurado. O front (`apps/web/dist`) é estático e deve ser servido à parte, com `VITE_BASE_API_URL` definido no build. Detalhes em [`docs/desenvolvimento.md`](docs/desenvolvimento.md#publicação-deploy).
 
 ## 7. Decisões e limitações conhecidas
 
