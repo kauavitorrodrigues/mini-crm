@@ -8,6 +8,9 @@ import { queryClient } from "@/lib/tanstack/queryClient";
 import { AUTH_VALIDATE_QUERY_KEY } from "../consts/queryKeys";
 import { useSignIn } from "../mutations/signIn";
 
+const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL as string | undefined;
+const DEMO_PASSWORD = import.meta.env.VITE_DEMO_PASSWORD as string | undefined;
+
 export function SignInForm() {
     const navigate = useNavigate();
     const signIn = useSignIn();
@@ -35,7 +38,7 @@ export function SignInForm() {
             <TextFormField
                 control={form.control}
                 name="email"
-                label="Email"
+                label="E-mail"
                 required
                 type="email"
                 disabled={signIn.isPending}
@@ -43,7 +46,7 @@ export function SignInForm() {
             <TextFormField
                 control={form.control}
                 name="password"
-                label="Password"
+                label="Senha"
                 required
                 type="password"
                 disabled={signIn.isPending}
@@ -54,8 +57,25 @@ export function SignInForm() {
                 </p>
             )}
             <Button type="submit" disabled={signIn.isPending}>
-                Sign in
+                Entrar
             </Button>
+            {DEMO_EMAIL && DEMO_PASSWORD && (
+                <Button
+                    type="button"
+                    variant="outline"
+                    disabled={signIn.isPending}
+                    onClick={() => {
+                        form.setValue("email", DEMO_EMAIL, {
+                            shouldValidate: true,
+                        });
+                        form.setValue("password", DEMO_PASSWORD, {
+                            shouldValidate: true,
+                        });
+                    }}
+                >
+                    Preencher credenciais de demonstração
+                </Button>
+            )}
         </form>
     );
 }

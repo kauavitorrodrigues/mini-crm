@@ -45,7 +45,7 @@ pnpm dev
 - Web: http://localhost:5173
 - API: http://localhost:4353 (Swagger at `/api-docs`, health at `/health/ping`)
 
-Sign in with `SEED_USER_EMAIL` / `SEED_USER_PASSWORD` from your `.env`. There is no public signup or password recovery. The seed is idempotent and creates the user and the four funnel stages (Novo lead, Em negociação, Proposta enviada, Fechamento). For presentation data (a few contacts, deals and notes) run `pnpm --filter @mini-crm/database db:seed:demo` (also idempotent).
+Sign in with `SEED_USER_EMAIL` / `SEED_USER_PASSWORD` from your `.env`. There is no public signup or password recovery. The seed is idempotent and creates the user and the four funnel stages (Novo lead, Em negociação, Proposta enviada, Fechamento). For presentation data (a few contacts, deals and notes) run `pnpm --filter @mini-crm/database db:seed:demo` (also idempotent). The login page has a "Preencher credenciais de demonstração" button that fills `VITE_DEMO_EMAIL` / `VITE_DEMO_PASSWORD` (keep them equal to the seed user; remove them from `.env` to hide the button).
 
 The API implements the endpoints in [`docs/API-CONTRACT.md`](docs/API-CONTRACT.md): contacts (with `?q=` search), deals (filters, stage and status transitions), notes and the dashboard summary.
 
