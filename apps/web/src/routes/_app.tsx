@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { queryClient } from "@/lib/tanstack/queryClient";
 import { validateQueryOptions } from "@/features/auth/queries/validate";
+import { AppShell } from "@/components/layout/AppShell";
 import { AuthProvider } from "@/features/auth/contexts/AuthContext";
 
 export const Route = createFileRoute("/_app")({
@@ -21,7 +22,9 @@ function AppLayout() {
 
     return (
         <AuthProvider user={user}>
-            <Outlet />
+            <AppShell>
+                <Outlet />
+            </AppShell>
         </AuthProvider>
     );
 }
