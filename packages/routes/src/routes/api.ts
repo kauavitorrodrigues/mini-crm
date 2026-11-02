@@ -41,5 +41,10 @@ export const ApiRoutes = {
         byId: { root: "/:id", full: "/deals/:id" },
         stage: { root: "/:id/stage", full: "/deals/:id/stage" },
         status: { root: "/:id/status", full: "/deals/:id/status" },
+        notes: { root: "/:id/notes", full: "/deals/:id/notes" },
+    },
+    notes: {
+        root: "/notes",
+        byId: { root: "/:id", full: "/notes/:id" },
     },
 };

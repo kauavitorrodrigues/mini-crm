@@ -6,6 +6,7 @@ import { validateEnv } from "./config/env.validation";
 import { AuthModule } from "./features/auth/auth.module";
 import { ContactsModule } from "./features/contacts/contacts.module";
 import { DealsModule } from "./features/deals/deals.module";
+import { NotesModule } from "./features/notes/notes.module";
 import { StagesModule } from "./features/stages/stages.module";
 
 @Module({
@@ -18,6 +19,7 @@ import { StagesModule } from "./features/stages/stages.module";
         StagesModule,
         ContactsModule,
         DealsModule,
+        NotesModule,
     ],
     controllers: [AppController],
     providers: [AppService],

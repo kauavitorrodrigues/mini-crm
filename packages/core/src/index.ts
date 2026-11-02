@@ -3,5 +3,6 @@
 export * from "./features/contacts";
 export * from "./features/deals";
 export * from "./features/health";
+export * from "./features/notes";
 export * from "./features/stages";
 export * from "./features/users";
