@@ -9,17 +9,17 @@ const STYLE: Record<
 > = {
     OPEN: {
         className:
-            "bg-blue-500/10 text-blue-700 dark:bg-blue-400/15 dark:text-blue-300",
+            "bg-transparent text-blue-700 ring-1 ring-blue-600/20 dark:text-blue-300 dark:ring-blue-400/30",
         icon: CircleDotIcon,
     },
     WON: {
         className:
-            "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300",
+            "bg-transparent text-emerald-700 ring-1 ring-emerald-600/20 dark:text-emerald-300 dark:ring-emerald-400/30",
         icon: CheckCircle2Icon,
     },
     LOST: {
         className:
-            "bg-red-500/10 text-red-700 dark:bg-red-400/15 dark:text-red-300",
+            "bg-transparent text-red-700 ring-1 ring-red-600/20 dark:text-red-300 dark:ring-red-400/30",
         icon: XCircleIcon,
     },
 };

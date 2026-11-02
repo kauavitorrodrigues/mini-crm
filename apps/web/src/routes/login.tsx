@@ -17,7 +17,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 p-4">
+        <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-4">
             <div className="flex flex-col items-center gap-2 text-center">
                 <Logo size={48} />
                 <p className="text-sm text-muted-foreground">

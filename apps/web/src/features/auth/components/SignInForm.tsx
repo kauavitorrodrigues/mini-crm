@@ -39,7 +39,7 @@ export function SignInForm() {
     };
 
     return (
-        <Card className="w-full max-w-sm shadow-lg">
+        <Card className="w-full max-w-sm">
             <CardHeader>
                 <CardTitle>Entrar</CardTitle>
                 <CardDescription>
@@ -77,22 +77,28 @@ export function SignInForm() {
                         Entrar
                     </Button>
                     {DEMO_EMAIL && DEMO_PASSWORD && (
-                        <Button
-                            type="button"
-                            variant="outline"
-                            disabled={signIn.isPending}
-                            onClick={() => {
-                                form.setValue("email", DEMO_EMAIL, {
-                                    shouldValidate: true,
-                                });
-                                form.setValue("password", DEMO_PASSWORD, {
-                                    shouldValidate: true,
-                                });
-                            }}
-                        >
-                            <SparklesIcon aria-hidden />
-                            Preencher credenciais de demonstração
-                        </Button>
+                        <div className="flex flex-col gap-2 border-t pt-4">
+                            <p className="text-center text-xs text-muted-foreground">
+                                Use as credenciais de demonstração para entrar
+                                rápido.
+                            </p>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                disabled={signIn.isPending}
+                                onClick={() => {
+                                    form.setValue("email", DEMO_EMAIL, {
+                                        shouldValidate: true,
+                                    });
+                                    form.setValue("password", DEMO_PASSWORD, {
+                                        shouldValidate: true,
+                                    });
+                                }}
+                            >
+                                <SparklesIcon aria-hidden />
+                                Preencher credenciais de demonstração
+                            </Button>
+                        </div>
                     )}
                 </form>
             </CardContent>
