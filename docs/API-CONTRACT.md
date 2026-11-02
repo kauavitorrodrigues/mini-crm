@@ -4,29 +4,29 @@ Sucesso: `{ "data": <payload> }` (204 sem corpo). Erro: `ApiErrorResponse` de `@
 
 Tipos/Zod-ou-DTO/erros ficam em `packages/contracts` (uma pasta por feature), regras em `packages/core`, paths em `packages/routes`.
 
-| Método | Rota | Corpo / query | Resposta | Erros |
-| --- | --- | --- | --- | --- |
-| GET | /health/ping | — | `{status:"ok", database:"up"}` | 503 se banco fora |
-| POST | /auth/signin | `{email,password}` | `{user}` (+cookie) | 401 genérico |
-| POST | /auth/signout | — | 204 | 401 |
-| GET | /auth/validate | — | `{user}` | 401 |
-| GET | /stages | — | `Stage[]` ordenado por `order` | |
-| GET | /contacts | `?q=` (nome/e-mail, ILIKE) | `Contact[]` | |
-| POST | /contacts | `{name,email?,phone?,company?}` | `Contact` | 400 |
-| GET | /contacts/:id | — | `Contact` | 404 |
-| PATCH | /contacts/:id | parcial | `Contact` | 400/404 |
-| DELETE | /contacts/:id | — | 204 | 404, **409** se tem negócios |
-| GET | /deals | `?stageId=&status=OPEN\|WON\|LOST` | `Deal[]` (com `contact:{id,name}`) | |
-| POST | /deals | `{title,value,contactId,stageId?}` | `Deal` | 400, 404 contato |
-| GET | /deals/:id | — | `Deal` | 404 |
-| PATCH | /deals/:id | `{title?,value?,contactId?,stageId?}` (nunca status) | `Deal` | 400/404 |
-| PATCH | /deals/:id/stage | `{stageId}` | `Deal` | 404 deal/stage |
-| PATCH | /deals/:id/status | `{status}` | `Deal` (ajusta `closedAt`) | 400/404 |
-| DELETE | /deals/:id | — | 204 (notas em cascata) | 404 |
-| GET | /deals/:id/notes | — | `Note[]` mais recente primeiro | 404 |
-| POST | /deals/:id/notes | `{text}` (1–2000) | `Note` | 400/404 |
-| DELETE | /notes/:id | — | 204 | 403 se não for autor, 404 |
-| GET | /dashboard | — | `DashboardSummary` | |
+| Método | Rota              | Corpo / query                                        | Resposta                           | Erros                        |
+| ------ | ----------------- | ---------------------------------------------------- | ---------------------------------- | ---------------------------- |
+| GET    | /health/ping      | —                                                    | `{status:"ok", database:"up"}`     | 503 se banco fora            |
+| POST   | /auth/signin      | `{email,password}`                                   | `{user}` (+cookie)                 | 401 genérico                 |
+| POST   | /auth/signout     | —                                                    | 204                                | 401                          |
+| GET    | /auth/validate    | —                                                    | `{user}`                           | 401                          |
+| GET    | /stages           | —                                                    | `Stage[]` ordenado por `order`     |                              |
+| GET    | /contacts         | `?q=` (nome/e-mail, ILIKE)                           | `Contact[]`                        |                              |
+| POST   | /contacts         | `{name,email?,phone?,company?}`                      | `Contact`                          | 400                          |
+| GET    | /contacts/:id     | —                                                    | `Contact`                          | 404                          |
+| PATCH  | /contacts/:id     | parcial                                              | `Contact`                          | 400/404                      |
+| DELETE | /contacts/:id     | —                                                    | 204                                | 404, **409** se tem negócios |
+| GET    | /deals            | `?stageId=&status=OPEN\|WON\|LOST`                   | `Deal[]` (com `contact:{id,name}`) |                              |
+| POST   | /deals            | `{title,value,contactId,stageId?}`                   | `Deal`                             | 400, 404 contato             |
+| GET    | /deals/:id        | —                                                    | `Deal`                             | 404                          |
+| PATCH  | /deals/:id        | `{title?,value?,contactId?,stageId?}` (nunca status) | `Deal`                             | 400/404                      |
+| PATCH  | /deals/:id/stage  | `{stageId}`                                          | `Deal`                             | 404 deal/stage               |
+| PATCH  | /deals/:id/status | `{status}`                                           | `Deal` (ajusta `closedAt`)         | 400/404                      |
+| DELETE | /deals/:id        | —                                                    | 204 (notas em cascata)             | 404                          |
+| GET    | /deals/:id/notes  | —                                                    | `Note[]` mais recente primeiro     | 404                          |
+| POST   | /deals/:id/notes  | `{text}` (1–2000)                                    | `Note`                             | 400/404                      |
+| DELETE | /notes/:id        | —                                                    | 204                                | 403 se não for autor, 404    |
+| GET    | /dashboard        | —                                                    | `DashboardSummary`                 |                              |
 
 ```ts
 Stage   { id, name, order }

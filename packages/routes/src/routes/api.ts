@@ -12,10 +12,6 @@ export const ApiRoutes = {
             root: "/signin",
             full: "/auth/signin",
         },
-        signup: {
-            root: "/signup",
-            full: "/auth/signup",
-        },
         signout: {
             root: "/signout",
             full: "/auth/signout",
@@ -24,20 +20,12 @@ export const ApiRoutes = {
             root: "/validate",
             full: "/auth/validate",
         },
-        resetPasswordRequest: {
-            root: "/reset-password/request",
-            full: "/auth/reset-password/request",
-        },
-        resetPassword: {
-            root: "/reset-password",
-            full: "/auth/reset-password",
-        },
     },
-    users: {
-        root: "/users",
-        byId: {
-            root: "/:id",
-            full: "/users/:id",
+    stages: {
+        root: "/stages",
+        list: {
+            root: "",
+            full: "/stages",
         },
     },
 };

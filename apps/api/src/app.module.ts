@@ -4,6 +4,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { validateEnv } from "./config/env.validation";
 import { AuthModule } from "./features/auth/auth.module";
+import { StagesModule } from "./features/stages/stages.module";
 
 @Module({
     imports: [
@@ -12,6 +13,7 @@ import { AuthModule } from "./features/auth/auth.module";
             validate: validateEnv,
         }),
         AuthModule,
+        StagesModule,
     ],
     controllers: [AppController],
     providers: [AppService],
