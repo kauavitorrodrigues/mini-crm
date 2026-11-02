@@ -6,7 +6,7 @@
     "types": "./src/index.ts",
     "scripts": {
         "check-types": "tsc --noEmit",
-        "test": "vitest run",
+        "test": "pnpm env:load vitest run",
         "env:load": "dotenv -e ../../.env --",
         "db:generate": "pnpm env:load drizzle-kit generate --name",
         "db:migrate": "pnpm env:load drizzle-kit migrate",

@@ -1,8 +1,5 @@
 import bcrypt from "bcryptjs";
-import {
-    normalizeEmail,
-    UserAlreadyExistsError,
-} from "@mini-crm/contracts";
+import { normalizeEmail, UserAlreadyExistsError } from "@mini-crm/contracts";
 import type { CreateUserInput } from "@mini-crm/contracts";
 import { UserRepository } from "../repository";
 import { BCRYPT_SALT_ROUNDS } from "../consts";
@@ -19,6 +16,5 @@ export const createUser = async (data: CreateUserInput) => {
         name: data.name,
         email,
         password,
-        role: data.role,
     });
 };

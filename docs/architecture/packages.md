@@ -1,22 +1,21 @@
 # Shared packages
 
-`packages/` holds everything that must not exist twice. Every app (`web`, `api`/`desktop`, `worker`) imports from here instead of duplicating logic, types, or rules — this is what keeps them from drifting apart as the project grows.
+`packages/` holds everything that must not exist twice. Every app (`web`, `api`) imports from here instead of duplicating logic, types, or rules — this is what keeps them from drifting apart as the project grows.
 
 ```mermaid
 graph LR
     core["packages/core<br/>domain logic"] --> contracts["packages/contracts<br/>types & errors"]
-    core --> auth["packages/auth<br/>permissions"]
-    auth --> contracts
+    core --> database["packages/database<br/>Drizzle + PostgreSQL"]
+    database --> contracts
     routes["packages/routes<br/>API path constants"] --> contracts
-    apps["apps (web / api / worker / desktop)"] --> core
-    apps --> auth
+    apps["apps (web / api)"] --> core
     apps --> routes
     apps --> contracts
 ```
 
 ## `packages/contracts`
 
-The single source of truth for cross-cutting types: domain shapes (`users/types`), enums (`users/enums`), request/response envelopes (`requests/`), and typed error classes (`errors/`, plus one `errors/` folder per feature, e.g. `auth/errors`). Both frontend and backend import from here so a type only needs to change in one place.
+The single source of truth for cross-cutting types: domain shapes (`users/types`), request/response envelopes (`requests/`), and typed error classes (`errors/`, plus one `errors/` folder per feature, e.g. `auth/errors`). Both frontend and backend import from here so a type only needs to change in one place.
 
 ## `packages/core`
 
@@ -27,10 +26,6 @@ Domain logic, organized by feature under `src/features/<feature>/`. Each feature
 - `consts/` — feature-local constants.
 
 `core` never declares its own input/DTO types — those live in `packages/contracts` and `core` imports them. This keeps the domain layer decoupled from how a caller (HTTP body, RPC message) shaped the input.
-
-## `packages/auth`
-
-The permission matrix: `consts/roles.ts` and `consts/resources.ts` define what exists, `lib/can.ts` is the single function that decides whether a role can act on a resource. Nothing outside this package should reimplement a permission check.
 
 ## `packages/routes`
 

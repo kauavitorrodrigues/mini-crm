@@ -6,15 +6,15 @@ Fonte: `.claude/ENTREGA-SCRUM.docx` (10 histórias, 16 pts, 4 sprints). Este pla
 
 O docx sugere Express + Prisma + Zod, mas admite alternativa justificada. O repo já tem monorepo funcional, então **mantemos o que existe**:
 
-| Camada | Docx sugeria | Usaremos (já no repo) |
-| --- | --- | --- |
-| API | Express | NestJS (`apps/api`) |
-| ORM | Prisma | Drizzle + PostgreSQL (`packages/database`) |
-| Sessão | cookie httpOnly | JWT em cookie httpOnly (já implementado) |
-| Validação | Zod | DTOs do Nest (class-validator já em uso) — ou Zod se preferirem; escolher 1 e manter |
-| Web | React + Vite + Tailwind | igual + TanStack Router/Query + shadcn/ui |
-| DnD | lib com toque | `@dnd-kit/core` (suporta toque/teclado) |
-| Testes | Vitest | Vitest (já configurado) |
+| Camada    | Docx sugeria            | Usaremos (já no repo)                                                                |
+| --------- | ----------------------- | ------------------------------------------------------------------------------------ |
+| API       | Express                 | NestJS (`apps/api`)                                                                  |
+| ORM       | Prisma                  | Drizzle + PostgreSQL (`packages/database`)                                           |
+| Sessão    | cookie httpOnly         | JWT em cookie httpOnly (já implementado)                                             |
+| Validação | Zod                     | DTOs do Nest (class-validator já em uso) — ou Zod se preferirem; escolher 1 e manter |
+| Web       | React + Vite + Tailwind | igual + TanStack Router/Query + shadcn/ui                                            |
+| DnD       | lib com toque           | `@dnd-kit/core` (suporta toque/teclado)                                              |
+| Testes    | Vitest                  | Vitest (já configurado)                                                              |
 
 Regra de camadas do repo: `web → api → core → database`. Regra de negócio fica em `packages/core`, tipos/erros em `contracts`, paths em `routes`.
 
@@ -22,13 +22,13 @@ Regra de camadas do repo: `web → api → core → database`. Regra de negócio
 
 O scaffold tem coisas **fora do escopo** do docx (seção 7.7) que devem ser removidas ou ignoradas para não virar scope creep:
 
-| Existe hoje | Docx diz | Ação |
-| --- | --- | --- |
-| Roles ADMIN/USER, `packages/auth` (matriz de permissão) | Papel único "Usuário" | Remover roles do fluxo; deixar `packages/auth` sem uso (ou apagar) |
-| Rotas `signup`, `resetPassword*` em `routes` | Sem cadastro público, sem recuperação de senha | Remover as rotas/constantes |
-| `apps/worker`, `packages/jobs`, `packages/infra` (Redis/BullMQ), Redis no `compose.yml` | Sem filas/background | Remover worker + Redis (ou deixar sem subir). Simplifica `pnpm dev` e deploy |
-| Seed cria 2 usuários demo | Seed de 1 usuário por variáveis de ambiente | Ajustar seed (`SEED_USER_*` no `.env`) |
-| Soft delete (`deletedAt`) em users | — | Manter só se já for padrão do schema; negócios/contatos usam delete real |
+| Existe hoje                                                                             | Docx diz                                       | Ação                                                                         |
+| --------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------- |
+| Roles ADMIN/USER, `packages/auth` (matriz de permissão)                                 | Papel único "Usuário"                          | Remover roles do fluxo; deixar `packages/auth` sem uso (ou apagar)           |
+| Rotas `signup`, `resetPassword*` em `routes`                                            | Sem cadastro público, sem recuperação de senha | Remover as rotas/constantes                                                  |
+| `apps/worker`, `packages/jobs`, `packages/infra` (Redis/BullMQ), Redis no `compose.yml` | Sem filas/background                           | Remover worker + Redis (ou deixar sem subir). Simplifica `pnpm dev` e deploy |
+| Seed cria 2 usuários demo                                                               | Seed de 1 usuário por variáveis de ambiente    | Ajustar seed (`SEED_USER_*` no `.env`)                                       |
+| Soft delete (`deletedAt`) em users                                                      | —                                              | Manter só se já for padrão do schema; negócios/contatos usam delete real     |
 
 ## 3. Modelo de dados (Drizzle)
 
@@ -50,7 +50,8 @@ Ordem dentro de cada sprint respeita as dependências do docx (US-02 → US-01 �
 ### Sprint 1 — Fundação (5 pts)
 
 **US-02 Fundação e CI (2)**
-- [ ] Limpeza da seção 2 (worker, Redis, roles, signup/reset).
+
+- [x] Limpeza da seção 2 (worker, Redis, roles, signup/reset).
 - [ ] `/health` público que checa API **e banco** (hoje há `/health/ping` — estender com `SELECT 1`; 503/falha se o banco cair).
 - [ ] Validação de env na inicialização (já existe `env.validation.ts` — remover vars de Redis, adicionar `SEED_USER_*`).
 - [ ] CI (GitHub Actions): install frozen → `check-types` → `lint` → `test` → `build` (+ deploy via `pnpm run deploy` se houver servidor; senão documentar publicação manual).
@@ -58,12 +59,14 @@ Ordem dentro de cada sprint respeita as dependências do docx (US-02 → US-01 �
 - [ ] Publicar e compartilhar a URL.
 
 **US-01 Autenticação (2)**
+
 - [ ] Já existe signin/signout/validate com JWT em cookie. Revisar contra as RNs: e-mail normalizado (lowercase/trim) (RN1), bcrypt (RN2), erro genérico (RN3), cookie `httpOnly` + `sameSite=lax` + `secure` em prod (RN4), guard em tudo menos login/health (RN5 — considerar guard global com `@Public()`).
 - [ ] Seed do usuário inicial por env.
 - [ ] Web: tela de login, rota `_app` protegida, 401 limpa estado e redireciona.
 - [ ] Testes: credencial válida, inválida (mesma mensagem), sem sessão → 401, logout.
 
 **US-05 Funil fixo (1)**
+
 - [ ] Tabela `stages` + migração; seed idempotente (upsert por `name`/`order`).
 - [ ] `GET /stages` (somente leitura, ordenado).
 - [ ] Teste: rodar seed 2× não duplica.
@@ -73,16 +76,19 @@ Ordem dentro de cada sprint respeita as dependências do docx (US-02 → US-01 �
 ### Sprint 2 — Contatos e negócios (4 pts)
 
 **US-03 Gerir contatos (1)**
+
 - [ ] Tabela `contacts` + migração; `POST/GET/GET:id/PATCH/DELETE /contacts`.
 - [ ] Core: validações RN1–RN3; delete com negócios → **409** (RN4).
 - [ ] Web: lista (vazio/carregando/erro), formulário, confirmação de exclusão.
 - [ ] Teste do 409.
 
-**US-04 Buscar contatos (1)** *(Could — primeiro a cortar)*
+**US-04 Buscar contatos (1)** _(Could — primeiro a cortar)_
+
 - [ ] `GET /contacts?q=` com `ILIKE` em nome e e-mail; vazio = lista completa.
 - [ ] Web: input com debounce + estado "nenhum resultado".
 
 **US-06 CRUD de negócios (2)**
+
 - [ ] Tabela `deals` + enum `deal_status` + migração (FK contato `restrict`, notes `cascade`).
 - [ ] `POST/GET(filtros stageId,status)/GET:id/PATCH/DELETE /deals`. Criação: status OPEN, estágio default = 1º, contato deve existir (400/404). PATCH **não** altera status (RN6).
 - [ ] Web: lista + formulário, máscara BRL, validação inline.
@@ -93,6 +99,7 @@ Ordem dentro de cada sprint respeita as dependências do docx (US-02 → US-01 �
 ### Sprint 3 — Funil visual (4 pts)
 
 **US-07 Kanban (3)** — maior risco do projeto
+
 - [ ] Decisão da lib de DnD no primeiro dia (`@dnd-kit`); timebox de 2–3h de spike com toque.
 - [ ] `PATCH /deals/:id/stage` — valida estágio destino.
 - [ ] Web: `GET /deals?status=OPEN`, colunas por estágio com contagem + soma (calculados no front), cartão (título, valor, contato).
@@ -101,6 +108,7 @@ Ordem dentro de cada sprint respeita as dependências do docx (US-02 → US-01 �
 - [ ] Estado vazio por coluna.
 
 **US-08 Ganho/Perdido (1)**
+
 - [ ] `PATCH /deals/:id/status`: WON/LOST grava `closedAt = now()`; OPEN limpa `closedAt`.
 - [ ] Web: ações no cartão e na lista; filtro por status na lista; sai/volta do quadro.
 - [ ] Teste das transições OPEN→WON→OPEN→LOST.
@@ -110,15 +118,18 @@ Ordem dentro de cada sprint respeita as dependências do docx (US-02 → US-01 �
 ### Sprint 4 — Fechamento (3 pts)
 
 **US-09 Notas (1)**
+
 - [ ] Tabela `notes` + migração; `GET/POST /deals/:id/notes`, `DELETE /notes/:id` (403 se não for o autor).
 - [ ] Web: página de detalhe do negócio (`/deals/$id`) com timeline (mais recente primeiro), estado vazio, confirmação de exclusão.
 
 **US-10 Painel (2)**
+
 - [ ] `GET /dashboard` com agregações em SQL: abertos (qtd + valor), ganhos do mês (qtd + valor), perdidos do mês (qtd), conversão = ganhos / (ganhos + perdidos), 0 se divisor 0. "Mês" = `closedAt` no mês corrente.
 - [ ] Web: cartões simples em BRL, sem gráficos; estados carregando/erro.
 - [ ] Testes das fórmulas, incluindo mês sem encerramentos.
 
 **Estabilização**
+
 - [ ] Rodada manual do fluxo completo, ajustes visuais, seed de dados de demonstração, roteiro da apresentação.
 
 ## 5. Navegação do web (mínima)
@@ -128,6 +139,7 @@ Ordem dentro de cada sprint respeita as dependências do docx (US-02 → US-01 �
 ## 6. Definition of Done para a POC
 
 Mantido do docx, mas enxuto:
+
 - Critérios de aceite (Gherkin) cobertos por teste ou demo.
 - `pnpm lint && pnpm check-types && pnpm test && pnpm format:check` verdes.
 - Entrada validada na API; erros claros sem vazar detalhes internos; endpoints exigem sessão (exceto login/health).
@@ -146,13 +158,13 @@ Nunca cortar: auth, contatos, negócios, Kanban, ganho/perdido (fluxo ponta a po
 
 ## 8. Riscos principais → ação
 
-| Risco | Ação |
-| --- | --- |
-| DnD em toque | `@dnd-kit` + "Mover para…" na mesma história |
-| Integridade contato×negócio | FK `restrict` + 409 testado na Sprint 2 |
-| Scope creep (a herança do scaffold: roles, signup, worker) | Limpeza explícita na US-02 |
-| Cálculo de indicadores com poucos dados | Testar mês vazio; usar `COALESCE` nos somatórios |
-| Ambiente/publicação | Fazer deploy "hello world" no dia 1 da Sprint 1 |
+| Risco                                                      | Ação                                             |
+| ---------------------------------------------------------- | ------------------------------------------------ |
+| DnD em toque                                               | `@dnd-kit` + "Mover para…" na mesma história     |
+| Integridade contato×negócio                                | FK `restrict` + 409 testado na Sprint 2          |
+| Scope creep (a herança do scaffold: roles, signup, worker) | Limpeza explícita na US-02                       |
+| Cálculo de indicadores com poucos dados                    | Testar mês vazio; usar `COALESCE` nos somatórios |
+| Ambiente/publicação                                        | Fazer deploy "hello world" no dia 1 da Sprint 1  |
 
 ## 9. Próximo passo sugerido
 

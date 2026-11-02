@@ -12,8 +12,6 @@ export const updatedAtColumn = () =>
         .$onUpdate(() => new Date())
         .notNull();
 
-export const deletedAtColumn = () => timestamp("deleted_at", { mode: "date" });
-
 export const editedAtColumn = () => timestamp("edited_at", { mode: "date" });
 
 // PRIMARY KEY COLUMNS
