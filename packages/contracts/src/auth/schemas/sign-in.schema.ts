@@ -4,6 +4,8 @@ import { AuthErrorMessages } from "./consts/error-messages";
 export const SignInSchema = z.object({
     email: z
         .string({ error: AuthErrorMessages.email.required })
+        .trim()
+        .toLowerCase()
         .nonempty({ error: AuthErrorMessages.email.required })
         .email({ error: AuthErrorMessages.email.invalid }),
     password: z
