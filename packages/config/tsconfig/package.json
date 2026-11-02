@@ -1,0 +1,13 @@
+{
+    "name": "@mini-crm/tsconfig",
+    "version": "0.0.0",
+    "private": true,
+    "exports": {
+        "./base.json": "./base.json",
+        "./node-package.json": "./node-package.json",
+        "./node-app.json": "./node-app.json",
+        "./web-vite-base.json": "./web-vite-base.json",
+        "./web-vite-app.json": "./web-vite-app.json",
+        "./web-vite-node.json": "./web-vite-node.json"
+    }
+}

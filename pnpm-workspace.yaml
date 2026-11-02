@@ -1,0 +1,16 @@
+packages:
+    - "apps/*"
+    - "packages/*"
+    - "packages/config/*"
+
+saveExact: true
+
+allowBuilds:
+    "@scarf/scarf": false
+    "@swc/core": true
+    esbuild: false
+    msgpackr-extract: false
+
+minimumReleaseAgeExclude:
+    - "@vitejs/plugin-react@6.2.1"
+    - cn@0.5.2

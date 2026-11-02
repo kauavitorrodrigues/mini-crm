@@ -1,0 +1,21 @@
+{
+    "name": "mini-crm",
+    "private": true,
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev",
+        "lint": "turbo run lint",
+        "check-types": "turbo run check-types",
+        "test": "turbo run test",
+        "format": "prettier . --write",
+        "format:check": "prettier . --check",
+        "deploy": "git pull && pnpm install && pnpm --filter @mini-crm/database run db:deploy && pnpm build && pm2 startOrReload ecosystem.config.js"
+    },
+    "devDependencies": {
+        "@mini-crm/prettier-config": "workspace:*",
+        "prettier": "3.9.10",
+        "turbo": "2.11.10",
+        "vitest": "5.0.5"
+    },
+    "packageManager": "pnpm@12.16.1"
+}

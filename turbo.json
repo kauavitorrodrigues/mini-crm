@@ -1,0 +1,28 @@
+{
+    "$schema": "https://turborepo.com/schema.json",
+    "globalDependencies": [".env"],
+    "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": ["dist/**", ".next/**", "!.next/cache/**", "out/**"],
+            "env": ["VITE_BASE_API_URL"]
+        },
+        "check-types": {
+            "dependsOn": ["^check-types"]
+        },
+        "lint": {
+            "dependsOn": ["^lint"]
+        },
+        "test": {
+            "dependsOn": ["^test"]
+        },
+        "dev": {
+            "persistent": true,
+            "cache": false
+        },
+        "dev:hmr": {
+            "persistent": true,
+            "cache": false
+        }
+    }
+}

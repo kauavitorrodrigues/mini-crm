@@ -1,0 +1,50 @@
+name: "mini-crm"
+services:
+    postgres:
+        image: postgres:18-alpine
+        container_name: "mini-crm_postgres"
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        ports:
+            - "127.0.0.1:${POSTGRES_PORT}:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql
+        restart: unless-stopped
+        healthcheck:
+            test:
+                [
+                    "CMD-SHELL",
+                    "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}",
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    redis-queue:
+        image: redis:alpine
+        container_name: "mini-crm_redis_queue"
+        ports:
+            - "127.0.0.1:${REDIS_PORT}:6379"
+        volumes:
+            - redis_queue_data:/data
+        command: >-
+            redis-server
+            --appendonly yes
+            --appendfsync everysec
+            --maxmemory-policy noeviction
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 3s
+            retries: 3
+
+volumes:
+    postgres_data:
+        driver: local
+        name: "mini-crm_postgres_data"
+    redis_queue_data:
+        driver: local
+        name: "mini-crm_redis_queue_data"
