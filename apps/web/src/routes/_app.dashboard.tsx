@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "@/components/common/QueryState";
 import { DashboardCards } from "@/features/dashboard/components/DashboardCards";
 
 export const Route = createFileRoute("/_app/dashboard")({
@@ -7,8 +8,11 @@ export const Route = createFileRoute("/_app/dashboard")({
 
 function Dashboard() {
     return (
-        <div className="flex flex-col gap-4 p-4 md:p-6">
-            <h1 className="text-xl font-semibold">Painel</h1>
+        <div>
+            <PageHeader
+                title="Painel"
+                description="Como está o seu funil de vendas neste mês."
+            />
             <DashboardCards />
         </div>
     );

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import {
     DndContext,
     DragOverlay,
@@ -10,7 +10,7 @@ import {
     type DragEndEvent,
     type DragStartEvent,
 } from "@dnd-kit/core";
-import { KanbanIcon } from "lucide-react";
+import { KanbanIcon, PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     Empty,
@@ -19,7 +19,10 @@ import {
     EmptyMedia,
     EmptyTitle,
 } from "@/components/ui/empty";
+import { PageHeader } from "@/components/common/QueryState";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DealFormDialog } from "@/features/deals/components/DealFormDialog";
+import { GettingStarted } from "@/features/onboarding/components/GettingStarted";
 import { useStages } from "../queries/getStages";
 import { useBoardDeals } from "../queries/getBoardDeals";
 import { useMoveDealStage } from "../mutations/moveDealStage";
@@ -35,6 +38,7 @@ export function KanbanBoard() {
     const move = useMoveDealStage();
     const close = useCloseDeal();
     const [activeId, setActiveId] = useState<string | null>(null);
+    const [formOpen, setFormOpen] = useState(false);
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -65,15 +69,26 @@ export function KanbanBoard() {
         if (e.over) handleMove(String(e.active.id), String(e.over.id));
     };
 
+    const header = (action?: ReactNode) => (
+        <PageHeader
+            title="Pipeline"
+            description="Arraste os negócios entre as etapas para avançar no funil."
+            action={action}
+        />
+    );
+
     if (stagesQuery.isPending || dealsQuery.isPending) {
         return (
-            <div className="flex gap-3 overflow-x-auto" aria-busy="true">
-                {Array.from({ length: 4 }, (_, i) => (
-                    <Skeleton
-                        key={i}
-                        className="h-72 w-72 shrink-0 rounded-xl"
-                    />
-                ))}
+            <div>
+                {header()}
+                <div className="flex gap-3 overflow-x-auto" aria-busy="true">
+                    {Array.from({ length: 4 }, (_, i) => (
+                        <Skeleton
+                            key={i}
+                            className="h-72 w-72 shrink-0 rounded-xl"
+                        />
+                    ))}
+                </div>
             </div>
         );
     }
@@ -100,20 +115,34 @@ export function KanbanBoard() {
         );
     }
 
+    const isEmpty = deals.length === 0;
+    const createButton = (label: string) => (
+        <Button onClick={() => setFormOpen(true)}>
+            <PlusIcon aria-hidden />
+            {label}
+        </Button>
+    );
+
     return (
         <div className="flex flex-col gap-4">
-            {deals.length === 0 && (
-                <Empty className="border">
-                    <EmptyHeader>
-                        <EmptyMedia variant="icon">
-                            <KanbanIcon />
-                        </EmptyMedia>
-                        <EmptyTitle>Nenhum negócio em aberto</EmptyTitle>
-                        <EmptyDescription>
-                            Crie um negócio para vê-lo no quadro.
-                        </EmptyDescription>
-                    </EmptyHeader>
-                </Empty>
+            {header(isEmpty ? undefined : createButton("Novo negócio"))}
+            {isEmpty && (
+                <>
+                    <Empty className="border">
+                        <EmptyHeader>
+                            <EmptyMedia variant="icon">
+                                <KanbanIcon />
+                            </EmptyMedia>
+                            <EmptyTitle>Seu funil está vazio</EmptyTitle>
+                            <EmptyDescription>
+                                Crie o primeiro negócio e acompanhe quanto
+                                dinheiro está a caminho em cada etapa.
+                            </EmptyDescription>
+                        </EmptyHeader>
+                        {createButton("Criar primeiro negócio")}
+                    </Empty>
+                    <GettingStarted />
+                </>
             )}
             <DndContext
                 sensors={sensors}
@@ -144,6 +173,7 @@ export function KanbanBoard() {
                     )}
                 </DragOverlay>
             </DndContext>
+            <DealFormDialog open={formOpen} onOpenChange={setFormOpen} />
         </div>
     );
 }

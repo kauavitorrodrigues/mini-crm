@@ -19,7 +19,7 @@ export function BoardColumn({ column, stages, onMove, onClose }: Props) {
     return (
         <section
             aria-label={column.stage.name}
-            className="flex w-72 shrink-0 flex-col gap-2 rounded-xl bg-muted/50 p-2"
+            className="flex w-72 shrink-0 flex-col gap-2 rounded-xl border bg-muted/50 p-2"
         >
             <header className="flex flex-col gap-0.5 px-1">
                 <div className="flex items-center justify-between gap-2">

@@ -39,7 +39,7 @@ export function DealCard({ deal, stages, onMove, onClose, overlay }: Props) {
         <div
             ref={setNodeRef}
             className={cn(
-                "flex items-start gap-1 rounded-lg bg-card p-2 text-sm shadow-xs ring-1 ring-foreground/10",
+                "flex items-start gap-1 rounded-lg bg-card p-2 text-sm shadow-xs ring-1 ring-foreground/10 transition-shadow hover:shadow-md",
                 isDragging && "opacity-40",
                 overlay && "shadow-lg ring-2 ring-primary"
             )}
@@ -62,11 +62,11 @@ export function DealCard({ deal, stages, onMove, onClose, overlay }: Props) {
                 >
                     {deal.title}
                 </Link>
-                <span className="truncate text-xs text-muted-foreground">
-                    {deal.contact.name}
-                </span>
                 <span className="font-semibold tabular-nums">
                     {formatBRL(deal.value)}
+                </span>
+                <span className="truncate text-xs text-muted-foreground">
+                    {deal.contact.name}
                 </span>
             </div>
 

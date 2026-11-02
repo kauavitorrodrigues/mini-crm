@@ -57,8 +57,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                                 activeOptions={{ exact }}
                                 className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                                 activeProps={{
-                                    className:
-                                        "bg-muted text-foreground",
+                                    className: "bg-muted text-foreground",
                                     "aria-current": "page",
                                 }}
                             >
