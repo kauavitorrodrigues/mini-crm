@@ -14,7 +14,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppContactsRouteImport } from './routes/_app.contacts'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
-import { Route as AppDealsRouteImport } from './routes/_app.deals'
+import { Route as AppDealsIndexRouteImport } from './routes/_app.deals.index'
+import { Route as AppDealsIdRouteImport } from './routes/_app.deals.$id'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -40,9 +41,14 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
-const AppDealsRoute = AppDealsRouteImport.update({
-  id: '/deals',
-  path: '/deals',
+const AppDealsIndexRoute = AppDealsIndexRouteImport.update({
+  id: '/deals/',
+  path: '/deals/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDealsIdRoute = AppDealsIdRouteImport.update({
+  id: '/deals/$id',
+  path: '/deals/$id',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -51,14 +57,16 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/contacts': typeof AppContactsRoute
   '/dashboard': typeof AppDashboardRoute
-  '/deals': typeof AppDealsRoute
+  '/deals/$id': typeof AppDealsIdRoute
+  '/deals/': typeof AppDealsIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/contacts': typeof AppContactsRoute
   '/dashboard': typeof AppDashboardRoute
-  '/deals': typeof AppDealsRoute
   '/': typeof AppIndexRoute
+  '/deals/$id': typeof AppDealsIdRoute
+  '/deals': typeof AppDealsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -66,22 +74,25 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_app/contacts': typeof AppContactsRoute
   '/_app/dashboard': typeof AppDashboardRoute
-  '/_app/deals': typeof AppDealsRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/deals/$id': typeof AppDealsIdRoute
+  '/_app/deals/': typeof AppDealsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/contacts' | '/dashboard' | '/deals'
+  fullPaths:
+    '/' | '/login' | '/contacts' | '/dashboard' | '/deals/$id' | '/deals/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/contacts' | '/dashboard' | '/deals' | '/'
+  to: '/login' | '/contacts' | '/dashboard' | '/' | '/deals/$id' | '/deals'
   id:
     | '__root__'
     | '/_app'
     | '/login'
     | '/_app/contacts'
     | '/_app/dashboard'
-    | '/_app/deals'
     | '/_app/'
+    | '/_app/deals/$id'
+    | '/_app/deals/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -126,11 +137,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/deals': {
-      id: '/_app/deals'
+    '/_app/deals/': {
+      id: '/_app/deals/'
       path: '/deals'
-      fullPath: '/deals'
-      preLoaderRoute: typeof AppDealsRouteImport
+      fullPath: '/deals/'
+      preLoaderRoute: typeof AppDealsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/deals/$id': {
+      id: '/_app/deals/$id'
+      path: '/deals/$id'
+      fullPath: '/deals/$id'
+      preLoaderRoute: typeof AppDealsIdRouteImport
       parentRoute: typeof AppRoute
     }
   }
@@ -139,15 +157,17 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppContactsRoute: typeof AppContactsRoute
   AppDashboardRoute: typeof AppDashboardRoute
-  AppDealsRoute: typeof AppDealsRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppDealsIdRoute: typeof AppDealsIdRoute
+  AppDealsIndexRoute: typeof AppDealsIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppContactsRoute: AppContactsRoute,
   AppDashboardRoute: AppDashboardRoute,
-  AppDealsRoute: AppDealsRoute,
   AppIndexRoute: AppIndexRoute,
+  AppDealsIdRoute: AppDealsIdRoute,
+  AppDealsIndexRoute: AppDealsIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
