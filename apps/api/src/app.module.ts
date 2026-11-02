@@ -5,6 +5,7 @@ import { AppService } from "./app.service";
 import { validateEnv } from "./config/env.validation";
 import { AuthModule } from "./features/auth/auth.module";
 import { ContactsModule } from "./features/contacts/contacts.module";
+import { DashboardModule } from "./features/dashboard/dashboard.module";
 import { DealsModule } from "./features/deals/deals.module";
 import { NotesModule } from "./features/notes/notes.module";
 import { StagesModule } from "./features/stages/stages.module";
@@ -18,6 +19,7 @@ import { StagesModule } from "./features/stages/stages.module";
         AuthModule,
         StagesModule,
         ContactsModule,
+        DashboardModule,
         DealsModule,
         NotesModule,
     ],

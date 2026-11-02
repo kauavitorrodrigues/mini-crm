@@ -47,4 +47,8 @@ export const ApiRoutes = {
         root: "/notes",
         byId: { root: "/:id", full: "/notes/:id" },
     },
+    dashboard: {
+        root: "/dashboard",
+        summary: { root: "", full: "/dashboard" },
+    },
 };
