@@ -1,4 +1,10 @@
+<p align="center">
+  <img src="docs/assets/unileste-logo.png" alt="Logo da UNILESTE" width="280" />
+</p>
+
 # MiniCRM
+
+> **Sistema desenvolvido como projeto acadêmico**, para fins exclusivamente didáticos, no curso de Sistemas de Informação do Centro Universitário do Leste de Minas Gerais (UNILESTE). Não é um produto comercial.
 
 CRM para equipes pequenas de vendas: cadastro de contatos, negócios em um funil visual (Kanban), notas e painel de resultados. Projeto acadêmico do curso de Sistemas de Informação da UNILESTE, disciplina **Processo de Produção, Métricas e Qualidade de Software**. Roda **100% local**, sem serviços de terceiros.
 
@@ -412,3 +418,7 @@ Registradas de forma transparente, conferidas no código:
 | Itens da DoD que dependem de equipe    | Pull request, publicação pela esteira e aceite do PO não são demonstráveis neste repositório                                                                                                  |
 | Desvios de stack                       | NestJS e Drizzle no lugar de Express e Prisma, justificados na seção 4                                                                                                                        |
 | Listas sem paginação                   | Contatos e negócios são carregados por inteiro; adequado ao volume do MVP                                                                                                                     |
+
+---
+
+_A marca da UNILESTE pertence à instituição e é usada aqui apenas para identificar o contexto acadêmico do trabalho (fonte: [portal da UNILESTE](https://unileste.catolica.edu.br/portal/))._
