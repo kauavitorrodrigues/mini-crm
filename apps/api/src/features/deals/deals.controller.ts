@@ -16,6 +16,8 @@ import {
     CreateDealDto,
     ListDealsQueryDto,
     UpdateDealDto,
+    UpdateDealStageDto,
+    UpdateDealStatusDto,
 } from "./dto/deal.dto";
 
 @ApiTags("deals")
@@ -40,6 +42,16 @@ export class DealsController {
     @Patch(ApiRoutes.deals.byId.root)
     update(@Param("id") id: string, @Body() dto: UpdateDealDto) {
         return DealService.update(id, dto);
+    }
+
+    @Patch(ApiRoutes.deals.stage.root)
+    moveStage(@Param("id") id: string, @Body() dto: UpdateDealStageDto) {
+        return DealService.moveStage(id, dto.stageId);
+    }
+
+    @Patch(ApiRoutes.deals.status.root)
+    changeStatus(@Param("id") id: string, @Body() dto: UpdateDealStatusDto) {
+        return DealService.changeStatus(id, dto.status);
     }
 
     @Delete(ApiRoutes.deals.byId.root)

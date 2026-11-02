@@ -194,4 +194,104 @@ describe("Deals (e2e)", () => {
         await ctx.agent.get(byId(id)).expect(404);
         await ctx.agent.delete(byId(id)).expect(404);
     });
+
+    describe("transitions", () => {
+        const stageRoute = (id: string) =>
+            buildApiRoute(ApiRoutes.deals.stage.full, { id });
+        const statusRoute = (id: string) =>
+            buildApiRoute(ApiRoutes.deals.status.full, { id });
+
+        it("moves a deal between stages and validates the target", async () => {
+            const res = await createDeal({
+                title: `Move ${TAG}`,
+                value: 1,
+                contactId: contact.id,
+            });
+            const id = (res.body as ApiSuccessResponse<Deal>).data.id;
+            const target = stages[1];
+            if (!target) throw new Error("stages not seeded");
+
+            const moved = await ctx.agent
+                .patch(stageRoute(id))
+                .send({ stageId: target.id })
+                .expect(200);
+            expect((moved.body as ApiSuccessResponse<Deal>).data.stageId).toBe(
+                target.id
+            );
+
+            await ctx.agent
+                .patch(stageRoute(id))
+                .send({ stageId: "nonexistent" })
+                .expect(404);
+            await ctx.agent
+                .patch(stageRoute("nope"))
+                .send({ stageId: target.id })
+                .expect(404);
+            await ctx.agent.patch(stageRoute(id)).send({}).expect(400);
+        });
+
+        it("transitions OPEN -> WON -> OPEN -> LOST adjusting closedAt", async () => {
+            const res = await createDeal({
+                title: `Status ${TAG}`,
+                value: 1,
+                contactId: contact.id,
+            });
+            const id = (res.body as ApiSuccessResponse<Deal>).data.id;
+            const set = async (status: string) =>
+                (
+                    (
+                        await ctx.agent
+                            .patch(statusRoute(id))
+                            .send({ status })
+                            .expect(200)
+                    ).body as ApiSuccessResponse<Deal>
+                ).data;
+
+            const won = await set("WON");
+            expect(won.status).toBe("WON");
+            expect(won.closedAt).not.toBeNull();
+            expect(
+                Math.abs(
+                    Date.now() - new Date(won.closedAt as string).getTime()
+                )
+            ).toBeLessThan(10_000);
+
+            const reopened = await set("OPEN");
+            expect(reopened.status).toBe("OPEN");
+            expect(reopened.closedAt).toBeNull();
+
+            const lost = await set("LOST");
+            expect(lost.status).toBe("LOST");
+            expect(lost.closedAt).not.toBeNull();
+
+            // Persisted, and a regular PATCH leaves status/closedAt alone.
+            await ctx.agent
+                .patch(byId(id))
+                .send({ title: `Still lost ${TAG}` })
+                .expect(200);
+            const got = (
+                (await ctx.agent.get(byId(id)).expect(200))
+                    .body as ApiSuccessResponse<Deal>
+            ).data;
+            expect(got.status).toBe("LOST");
+            expect(got.closedAt).toBe(lost.closedAt);
+        });
+
+        it("rejects invalid status (400) and unknown deals (404)", async () => {
+            const res = await createDeal({
+                title: `Bad status ${TAG}`,
+                value: 1,
+                contactId: contact.id,
+            });
+            const id = (res.body as ApiSuccessResponse<Deal>).data.id;
+            await ctx.agent
+                .patch(statusRoute(id))
+                .send({ status: "DONE" })
+                .expect(400);
+            await ctx.agent
+                .patch(statusRoute("nope"))
+                .send({ status: "WON" })
+                .expect(404);
+        });
+    });
 });
