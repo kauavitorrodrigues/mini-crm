@@ -85,15 +85,20 @@ export function ContactsPage() {
         });
     };
 
+    const isEmpty = !isPending && !isError && data.length === 0 && !q;
+
     return (
         <div>
             <PageHeader
                 title="Contatos"
+                description="Pessoas e empresas com quem você negocia."
                 action={
-                    <Button onClick={() => openForm(null)}>
-                        <PlusIcon aria-hidden />
-                        Novo contato
-                    </Button>
+                    isEmpty ? undefined : (
+                        <Button onClick={() => openForm(null)}>
+                            <PlusIcon aria-hidden />
+                            Novo contato
+                        </Button>
+                    )
                 }
             />
 
@@ -128,9 +133,15 @@ export function ContactsPage() {
                         <EmptyDescription>
                             {q
                                 ? `Nenhum contato encontrado para "${q}".`
-                                : "Crie seu primeiro contato para começar."}
+                                : "Cadastre quem você quer vender: com um contato você já pode abrir negócios no funil."}
                         </EmptyDescription>
                     </EmptyHeader>
+                    {!q && (
+                        <Button onClick={() => openForm(null)}>
+                            <PlusIcon aria-hidden />
+                            Criar primeiro contato
+                        </Button>
+                    )}
                 </Empty>
             ) : (
                 <div className="rounded-xl border">

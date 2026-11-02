@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash2Icon } from "lucide-react";
+import { StickyNoteIcon, Trash2Icon } from "lucide-react";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { ErrorState, ListSkeleton } from "@/components/common/QueryState";
 import { TextareaFormField } from "@/components/fields/TextareaFormField";
@@ -10,6 +10,7 @@ import {
     Empty,
     EmptyDescription,
     EmptyHeader,
+    EmptyMedia,
     EmptyTitle,
 } from "@/components/ui/empty";
 import { toast } from "@/components/ui/toast";
@@ -101,9 +102,13 @@ export function NotesSection({ dealId }: { dealId: string }) {
             ) : notes.data.length === 0 ? (
                 <Empty className="border">
                     <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                            <StickyNoteIcon />
+                        </EmptyMedia>
                         <EmptyTitle>Nenhuma nota ainda</EmptyTitle>
                         <EmptyDescription>
-                            Registre aqui o histórico deste negócio.
+                            Anote ligações e combinados para não perder o fio do
+                            negócio. Use o campo acima.
                         </EmptyDescription>
                     </EmptyHeader>
                 </Empty>

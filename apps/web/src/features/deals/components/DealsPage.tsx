@@ -88,16 +88,20 @@ export function DealsPage() {
         ...(stages.data ?? []).map((s) => ({ value: s.id, label: s.name })),
     ];
     const filtered = !!status || !!stageId;
+    const isEmpty = !isPending && !isError && data.length === 0 && !filtered;
 
     return (
         <div>
             <PageHeader
                 title="Negócios"
+                description="Acompanhe valor, etapa e status de cada oportunidade."
                 action={
-                    <Button onClick={() => openForm(null)}>
-                        <PlusIcon aria-hidden />
-                        Novo negócio
-                    </Button>
+                    isEmpty ? undefined : (
+                        <Button onClick={() => openForm(null)}>
+                            <PlusIcon aria-hidden />
+                            Novo negócio
+                        </Button>
+                    )
                 }
             />
 
@@ -113,7 +117,7 @@ export function DealsPage() {
                             <Button
                                 key={f.value}
                                 size="sm"
-                                variant={active ? "default" : "outline"}
+                                variant={active ? "secondary" : "outline"}
                                 aria-pressed={active}
                                 onClick={() =>
                                     navigate({
@@ -178,9 +182,15 @@ export function DealsPage() {
                         <EmptyDescription>
                             {filtered
                                 ? "Nenhum negócio corresponde aos filtros selecionados."
-                                : "Crie seu primeiro negócio para começar."}
+                                : "Cada negócio no funil mostra quanto você pode ganhar e o que fazer a seguir."}
                         </EmptyDescription>
                     </EmptyHeader>
+                    {!filtered && (
+                        <Button onClick={() => openForm(null)}>
+                            <PlusIcon aria-hidden />
+                            Criar primeiro negócio
+                        </Button>
+                    )}
                 </Empty>
             ) : (
                 <div className="rounded-xl border">
@@ -216,7 +226,9 @@ export function DealsPage() {
                                     <TableCell className="hidden sm:table-cell">
                                         {d.contact.name}
                                     </TableCell>
-                                    <TableCell>{formatBRL(d.value)}</TableCell>
+                                    <TableCell className="tabular-nums">
+                                        {formatBRL(d.value)}
+                                    </TableCell>
                                     <TableCell className="hidden md:table-cell">
                                         {stageName(d.stageId)}
                                     </TableCell>
