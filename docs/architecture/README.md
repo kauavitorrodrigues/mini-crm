@@ -8,3 +8,11 @@ How this codebase is organized, one file per part of the stack — read here fir
 - `frontend-*.md` — the internals of the frontend.
 
 If you change the code, keep the relevant file in sync — treat it as documentation of a folder's contract, not a changelog.
+
+Outros documentos do projeto:
+
+- [`../../README.md`](../../README.md) — visão geral, como rodar com `pnpm local`, funcionalidades e decisões.
+- [`../DEVELOPMENT.md`](../DEVELOPMENT.md) — rodar manualmente, testes, CI, publicação e como adicionar uma feature.
+- [`../SCRUM.md`](../SCRUM.md) — backlog, matriz Complexidade x Incerteza, sprints, DoR e DoD.
+- [`../API-CONTRACT.md`](../API-CONTRACT.md) — contrato da API.
+- [`../PLANO-EXECUCAO.md`](../PLANO-EXECUCAO.md) — plano técnico por sprint e status.

@@ -1,6 +1,8 @@
 # MiniCRM — Plano de execução (POC / MVP)
 
-Fonte: `.claude/ENTREGA-SCRUM.docx` (10 histórias, 16 pts, 4 sprints). Este plano transforma o backlog em tarefas técnicas na ordem de construção, já adaptadas ao scaffold que existe no repo.
+> **Status (atualizado):** as 10 histórias (US-01 a US-10, 16 pts) estão implementadas e cobertas por testes e2e da API: auth, estágios, contatos com busca, negócios com transições de estágio e status, notas, painel e saúde com checagem do banco, além do Kanban e das demais telas na web. A limpeza de escopo da seção 2 foi concluída (sem worker, Redis, roles, signup ou reset de senha). As caixas de seleção abaixo são o plano original e **não** foram mantidas marcadas. Pendências conhecidas: o CI nunca rodou no GitHub (sem remoto) e a publicação via PM2 não foi exercitada. Para rodar tudo com um comando, use `pnpm local` (ver [README](../README.md)); resumo de Scrum em [SCRUM.md](SCRUM.md) e guia técnico em [DEVELOPMENT.md](DEVELOPMENT.md).
+
+Fonte: documento de entrega Scrum da disciplina (10 histórias, 16 pts, 4 sprints). Este plano transforma o backlog em tarefas técnicas na ordem de construção, já adaptadas ao scaffold que existe no repo.
 
 ## 1. Decisões de stack (scaffold vence a sugestão do docx)
 
