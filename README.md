@@ -45,7 +45,9 @@ pnpm dev
 - Web: http://localhost:5173
 - API: http://localhost:4353 (Swagger at `/api-docs`, health at `/health/ping`)
 
-Sign in with `SEED_USER_EMAIL` / `SEED_USER_PASSWORD` from your `.env`. There is no public signup or password recovery. The seed is idempotent and creates the user and the four funnel stages (Novo lead, Em negociação, Proposta enviada, Fechamento).
+Sign in with `SEED_USER_EMAIL` / `SEED_USER_PASSWORD` from your `.env`. There is no public signup or password recovery. The seed is idempotent and creates the user and the four funnel stages (Novo lead, Em negociação, Proposta enviada, Fechamento). For presentation data (a few contacts, deals and notes) run `pnpm --filter @mini-crm/database db:seed:demo` (also idempotent).
+
+The API implements the endpoints in [`docs/API-CONTRACT.md`](docs/API-CONTRACT.md): contacts (with `?q=` search), deals (filters, stage and status transitions), notes and the dashboard summary.
 
 ## Scripts
 
@@ -64,6 +66,7 @@ pnpm --filter @mini-crm/database db:generate <name>   # Generate a migration
 pnpm --filter @mini-crm/database db:migrate           # Apply migrations (dev)
 pnpm --filter @mini-crm/database db:deploy            # Apply migrations (production)
 pnpm --filter @mini-crm/database db:seed              # Seed user and stages
+pnpm --filter @mini-crm/database db:seed:demo         # Optional demo contacts, deals and notes
 pnpm --filter @mini-crm/database db:studio            # Drizzle Studio
 ```
 
