@@ -34,4 +34,12 @@ export const ApiRoutes = {
         create: { root: "", full: "/contacts" },
         byId: { root: "/:id", full: "/contacts/:id" },
     },
+    deals: {
+        root: "/deals",
+        list: { root: "", full: "/deals" },
+        create: { root: "", full: "/deals" },
+        byId: { root: "/:id", full: "/deals/:id" },
+        stage: { root: "/:id/stage", full: "/deals/:id/stage" },
+        status: { root: "/:id/status", full: "/deals/:id/status" },
+    },
 };
