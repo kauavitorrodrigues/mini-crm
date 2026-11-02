@@ -1,3 +1,3 @@
-import { dealsKeys } from "@/features/deals/consts/queryKeys";
+import { dealsListQueryKey } from "@/features/deals/consts/queryKeys";
 
-export const BOARD_DEALS_QUERY_KEY = dealsKeys.list({ status: "OPEN" });
+export const BOARD_DEALS_QUERY_KEY = dealsListQueryKey({ status: "OPEN" });
