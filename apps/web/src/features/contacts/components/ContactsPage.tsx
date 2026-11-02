@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { getRouteApi } from "@tanstack/react-router";
-import { PencilIcon, PlusIcon, SearchIcon, Trash2Icon } from "lucide-react";
+import {
+    PencilIcon,
+    PlusIcon,
+    SearchIcon,
+    Trash2Icon,
+    UsersIcon,
+} from "lucide-react";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import {
     ErrorState,
@@ -12,6 +18,7 @@ import {
     Empty,
     EmptyDescription,
     EmptyHeader,
+    EmptyMedia,
     EmptyTitle,
 } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
@@ -112,6 +119,9 @@ export function ContactsPage() {
             ) : data.length === 0 ? (
                 <Empty className="border">
                     <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                            <UsersIcon />
+                        </EmptyMedia>
                         <EmptyTitle>
                             {q ? "Nenhum resultado" : "Nenhum contato ainda"}
                         </EmptyTitle>

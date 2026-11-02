@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getRouteApi, Link } from "@tanstack/react-router";
-import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { PencilIcon, PlusIcon, Trash2Icon, BriefcaseIcon } from "lucide-react";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import {
     ErrorState,
@@ -12,6 +12,7 @@ import {
     Empty,
     EmptyDescription,
     EmptyHeader,
+    EmptyMedia,
     EmptyTitle,
 } from "@/components/ui/empty";
 import {
@@ -166,6 +167,9 @@ export function DealsPage() {
             ) : data.length === 0 ? (
                 <Empty className="border">
                     <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                            <BriefcaseIcon />
+                        </EmptyMedia>
                         <EmptyTitle>
                             {filtered
                                 ? "Nenhum resultado"
