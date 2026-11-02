@@ -122,9 +122,10 @@ export function KanbanBoard() {
                 onDragCancel={() => setActiveId(null)}
             >
                 <div className="flex items-start gap-3 overflow-x-auto pb-2">
-                    {columns.map((column) => (
+                    {columns.map((column, index) => (
                         <BoardColumn
                             key={column.stage.id}
+                            index={index}
                             column={column}
                             stages={stages}
                             onMove={handleMove}

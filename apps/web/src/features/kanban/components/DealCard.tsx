@@ -39,9 +39,9 @@ export function DealCard({ deal, stages, onMove, onClose, overlay }: Props) {
         <div
             ref={setNodeRef}
             className={cn(
-                "flex items-start gap-1 rounded-lg bg-card p-2 text-sm shadow-xs ring-1 ring-foreground/10",
+                "flex items-start gap-1 rounded-lg bg-card p-2 text-sm shadow-xs ring-1 ring-foreground/10 transition-shadow hover:shadow-md hover:ring-primary/30",
                 isDragging && "opacity-40",
-                overlay && "shadow-lg ring-2 ring-primary"
+                overlay && "rotate-1 shadow-xl ring-2 ring-primary"
             )}
         >
             <button
