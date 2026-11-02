@@ -44,10 +44,6 @@ export default defineConfig({
     splitting: false,
     sourcemap: true,
     clean: true,
-    noExternal: [
-        "@mini-crm/contracts",
-        "@mini-crm/core",
-        "@mini-crm/routes",
-    ],
+    noExternal: ["@mini-crm/contracts", "@mini-crm/core", "@mini-crm/routes"],
     esbuildPlugins: [swcDecoratorMetadataPlugin],
 });
