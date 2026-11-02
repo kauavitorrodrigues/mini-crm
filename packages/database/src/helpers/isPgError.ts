@@ -5,7 +5,14 @@ export function isPgError(
     error: unknown,
     code?: PgErrorCode
 ): error is DatabaseError {
-    if (!(error instanceof DatabaseError)) return false;
-    if (!code) return true;
-    return error.code === code;
+    // Drizzle wraps driver errors in DrizzleQueryError and keeps the original
+    // in `cause`, so walk the chain.
+    let current: unknown = error;
+    for (let depth = 0; current && depth < 5; depth++) {
+        if (current instanceof DatabaseError) {
+            return !code || current.code === code;
+        }
+        current = (current as { cause?: unknown }).cause;
+    }
+    return false;
 }

@@ -1,4 +1,6 @@
 export * from "./auth";
+export * from "./contacts";
+export * from "./deals";
 export * from "./errors";
 export * from "./requests";
 export * from "./stages";

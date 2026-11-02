@@ -28,4 +28,10 @@ export const ApiRoutes = {
             full: "/stages",
         },
     },
+    contacts: {
+        root: "/contacts",
+        list: { root: "", full: "/contacts" },
+        create: { root: "", full: "/contacts" },
+        byId: { root: "/:id", full: "/contacts/:id" },
+    },
 };
