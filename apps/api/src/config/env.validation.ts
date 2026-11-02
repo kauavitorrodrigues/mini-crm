@@ -18,5 +18,8 @@ export const validateEnv = (config: Record<string, unknown>): EnvConfig => {
             throw new Error(`Missing required environment variable: ${key}`);
         }
     }
+    if (String(config[ENV_KEYS.jwtSecret]).length < 32) {
+        throw new Error("JWT_SECRET must be at least 32 characters long");
+    }
     return config as unknown as EnvConfig;
 };

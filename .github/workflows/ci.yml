@@ -1,0 +1,51 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+jobs:
+    verify:
+        runs-on: ubuntu-latest
+        services:
+            postgres:
+                image: postgres:18-alpine
+                env:
+                    POSTGRES_DB: mini-crm
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: postgres
+                ports:
+                    - 5485:5432
+                options: >-
+                    --health-cmd "pg_isready -U postgres -d mini-crm"
+                    --health-interval 5s
+                    --health-timeout 5s
+                    --health-retries 10
+        env:
+            DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5485/mini-crm
+            JWT_SECRET: ci_only_secret_that_is_at_least_32_characters_long
+            FRONTEND_URL: http://localhost:5173
+            API_URL: http://localhost:4353
+            SERVER_PORT: "4353"
+            VITE_BASE_API_URL: http://localhost:4353
+            SEED_USER_NAME: CI User
+            SEED_USER_EMAIL: ci@mini-crm.com
+            SEED_USER_PASSWORD: ci-password-123
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: pnpm
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm check-types
+            - run: pnpm lint
+            - run: pnpm format:check
+            - name: Migrate and seed database
+              run: |
+                  pnpm --filter @mini-crm/database db:migrate
+                  pnpm --filter @mini-crm/database db:seed
+            - run: pnpm test
+            - run: pnpm build
