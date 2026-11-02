@@ -1,6 +1,6 @@
 # MiniCRM — Plano de execução (POC / MVP)
 
-> **Status (atualizado):** as 10 histórias (US-01 a US-10, 16 pts) estão implementadas e cobertas por testes e2e da API: auth, estágios, contatos com busca, negócios com transições de estágio e status, notas, painel e saúde com checagem do banco, além do Kanban e das demais telas na web. A limpeza de escopo da seção 2 foi concluída (sem worker, Redis, roles, signup ou reset de senha). As caixas de seleção abaixo são o plano original e **não** foram mantidas marcadas. Pendências conhecidas: o CI nunca rodou no GitHub (sem remoto) e a publicação via PM2 não foi exercitada. Para rodar tudo com um comando, use `pnpm local` (ver [leia-me](../leia-me.md)); resumo de Scrum em [scrum.md](scrum.md) e guia técnico em [desenvolvimento.md](desenvolvimento.md).
+> **Status (atualizado):** as 10 histórias (US-01 a US-10, 16 pts) estão implementadas e cobertas por testes e2e da API: auth, estágios, contatos com busca, negócios com transições de estágio e status, notas, painel e saúde com checagem do banco, além do Kanban e das demais telas na web. A limpeza de escopo da seção 2 foi concluída (sem worker, Redis, roles, signup ou reset de senha). As caixas de seleção abaixo são o plano original e **não** foram mantidas marcadas. Pendências conhecidas: o CI nunca rodou no GitHub (sem remoto) e a publicação via PM2 não foi exercitada. Para rodar tudo com um comando, use `pnpm local` (ver [README](../README.md)); resumo de Scrum em [scrum.md](scrum.md) e guia técnico em [desenvolvimento.md](desenvolvimento.md).
 
 Fonte: documento de entrega Scrum da disciplina (10 histórias, 16 pts, 4 sprints). Este plano transforma o backlog em tarefas técnicas na ordem de construção, já adaptadas ao scaffold que existe no repo.
 
@@ -57,7 +57,7 @@ Ordem dentro de cada sprint respeita as dependências do docx (US-02 → US-01 �
 - [ ] `/health` público que checa API **e banco** (hoje há `/health/ping` — estender com `SELECT 1`; 503/falha se o banco cair).
 - [ ] Validação de env na inicialização (já existe `env.validation.ts` — remover vars de Redis, adicionar `SEED_USER_*`).
 - [ ] CI (GitHub Actions): install frozen → `check-types` → `lint` → `test` → `build` (+ deploy via `pnpm run deploy` se houver servidor; senão documentar publicação manual).
-- [ ] leia-me: subir local em poucos comandos, testar, publicar (atualizar para refletir o escopo real).
+- [ ] README: subir local em poucos comandos, testar, publicar (atualizar para refletir o escopo real).
 - [ ] Publicar e compartilhar a URL.
 
 **US-01 Autenticação (2)**

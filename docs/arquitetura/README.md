@@ -10,7 +10,7 @@ Se você alterar o código, mantenha o arquivo correspondente em dia. Trate-o co
 
 Outros documentos do projeto:
 
-- [`../../leia-me.md`](../../leia-me.md): visão geral, como rodar com `pnpm local`, funcionalidades e decisões.
+- [`../../README.md`](../../README.md): visão geral, como rodar com `pnpm local`, funcionalidades e decisões.
 - [`../desenvolvimento.md`](../desenvolvimento.md): rodar manualmente, testes, CI, publicação e como adicionar uma feature.
 - [`../scrum.md`](../scrum.md): backlog, matriz Complexidade x Incerteza, sprints, DoR e DoD.
 - [`../contrato-api.md`](../contrato-api.md): contrato da API.

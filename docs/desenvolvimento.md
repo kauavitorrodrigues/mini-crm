@@ -1,6 +1,6 @@
 # MiniCRM: guia de desenvolvimento
 
-Complemento técnico do [leia-me](../leia-me.md): rodar sem o script, testes, CI, publicação e como estender o projeto.
+Complemento técnico do [README](../README.md): rodar sem o script, testes, CI, publicação e como estender o projeto.
 
 ## Sumário
 
@@ -80,7 +80,7 @@ Siga a regra de camadas `web -> api -> core -> database`:
 5. Controller e módulo em `apps/api/src/features/<feature>/` (global `AuthGuard`: use `@Public()` só quando necessário) e teste e2e.
 6. Telas em `apps/web/src/features/<feature>/` e rota em `apps/web/src/routes/`.
 
-Detalhes por pacote em [`arquitetura/`](arquitetura/leia-me.md).
+Detalhes por pacote em [`arquitetura/`](arquitetura/README.md).
 
 ## Migrações
 

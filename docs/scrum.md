@@ -60,7 +60,7 @@ Maior risco por sprint: ambiente e publicação (1), integridade contato x negó
 
 **DoD global.** Uma história só é "Pronta" quando: os critérios de aceite passam (teste automatizado ou demonstração); há testes automatizados para regras de negócio e endpoints novos; tipos, estilo e formatação passam; toda entrada é validada na API e erros não expõem detalhes internos; endpoints novos exigem sessão (exceto login e saúde); mudanças de banco são migrações versionadas; houve revisão de código e integração na linha principal; a publicação pela esteira foi validada; e a história foi demonstrada e aceita pelo PO.
 
-Como isso aparece no repositório: testes e2e por feature em `apps/api/src/features/*/__tests__`, `pnpm lint`/`check-types`/`format:check` e migrações em `packages/database/migrations`. Os itens "publicação pela esteira" e "pull request" dependem de um remoto GitHub, que este repositório ainda não tem (ver [Limitações no leia-me](../leia-me.md#7-decisões-e-limitações-conhecidas)).
+Como isso aparece no repositório: testes e2e por feature em `apps/api/src/features/*/__tests__`, `pnpm lint`/`check-types`/`format:check` e migrações em `packages/database/migrations`. Os itens "publicação pela esteira" e "pull request" dependem de um remoto GitHub, que este repositório ainda não tem (ver [Limitações no README](../README.md#7-decisões-e-limitações-conhecidas)).
 
 ## Regras de negócio por história
 
