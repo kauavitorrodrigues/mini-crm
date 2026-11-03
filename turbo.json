@@ -14,7 +14,17 @@
             "dependsOn": ["^lint"]
         },
         "test": {
-            "dependsOn": ["^test"]
+            "dependsOn": ["^test"],
+            "passThroughEnv": [
+                "DATABASE_URL",
+                "JWT_SECRET",
+                "FRONTEND_URL",
+                "API_URL",
+                "SERVER_PORT",
+                "SEED_USER_NAME",
+                "SEED_USER_EMAIL",
+                "SEED_USER_PASSWORD"
+            ]
         },
         "dev": {
             "persistent": true,
