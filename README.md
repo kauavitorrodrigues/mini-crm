@@ -4,9 +4,9 @@
 
 # MiniCRM
 
-> **Sistema desenvolvido como projeto acadêmico**, para fins exclusivamente didáticos, no curso de Sistemas de Informação do Centro Universitário do Leste de Minas Gerais (UNILESTE). Não é um produto comercial.
+> **Sistema desenvolvido como projeto acadêmico**, para fins exclusivamente didáticos, no curso de Engenharia de Software do Centro Universitário do Leste de Minas Gerais (UNILESTE). Não é um produto comercial.
 
-CRM para equipes pequenas de vendas: cadastro de contatos, negócios em um funil visual (Kanban), notas e painel de resultados. Projeto acadêmico do curso de Sistemas de Informação da UNILESTE, disciplina **Processo de Produção, Métricas e Qualidade de Software**. Roda **100% local**, sem serviços de terceiros.
+CRM para equipes pequenas de vendas: cadastro de contatos, negócios em um funil visual (Kanban), notas e painel de resultados. Projeto acadêmico do curso de Engenharia de Software da UNILESTE, disciplina **Processo de Produção, Métricas e Qualidade de Software**. Roda **100% local**, sem serviços de terceiros.
 
 > **Avaliador: para rodar do zero, instale Node, pnpm e Docker (seção 2) e execute `pnpm local`.**
 
