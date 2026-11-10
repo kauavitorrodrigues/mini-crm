@@ -1,6 +1,6 @@
 # MiniCRM: resumo de Scrum
 
-Resumo dos artefatos de Scrum da entrega da disciplina _Processo de Produção, Métricas e Qualidade de Software_ (UNILESTE, Sistemas de Informação). O documento de entrega da disciplina detalha o escopo completo (histórias no template, critérios de aceite em Gherkin, riscos e dependências). Este arquivo condensa o que é necessário para avaliar o produto; o status de execução técnica está em [`plano-execucao.md`](plano-execucao.md).
+Resumo dos artefatos de Scrum da entrega da disciplina _Processo de Produção, Métricas e Qualidade de Software_ (UNILESTE, Engenharia de Software). O documento de entrega da disciplina detalha o escopo completo (histórias no template, critérios de aceite em Gherkin, riscos e dependências). Este arquivo condensa o que é necessário para avaliar o produto; o status de execução técnica está em [`plano-execucao.md`](plano-execucao.md).
 
 ## Sumário
 
